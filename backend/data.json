@@ -16,80 +16,16 @@
     ],
     "products": [
       {
-        "id": "huarache-x-stussy-le",
-        "name": "Nike Air Huarache Le",
+        "id": "classic-denim-jacket",
+        "name": "Classic Denim Jacket",
         "inStock": true,
         "gallery": [
-          "https://cdn.shopify.com/s/files/1/0087/6193/3920/products/DD1381200_DEOA_2_720x.jpg?v=1612816087",
-          "https://cdn.shopify.com/s/files/1/0087/6193/3920/products/DD1381200_DEOA_1_720x.jpg?v=1612816087",
-          "https://cdn.shopify.com/s/files/1/0087/6193/3920/products/DD1381200_DEOA_3_720x.jpg?v=1612816087",
-          "https://cdn.shopify.com/s/files/1/0087/6193/3920/products/DD1381200_DEOA_5_720x.jpg?v=1612816087",
-          "https://cdn.shopify.com/s/files/1/0087/6193/3920/products/DD1381200_DEOA_4_720x.jpg?v=1612816087"
+          "https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&h=800",
+          "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&h=800",
+          "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&h=800",
+          "https://images.unsplash.com/photo-1576871337622-98d48d1cf531?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&h=800"
         ],
-        "description": "<p>Great sneakers for everyday use!</p>",
-        "category": "clothes",
-        "attributes": [
-          {
-            "id": "Size",
-            "items": [
-              {
-                "displayValue": "40",
-                "value": "40",
-                "id": "40",
-                "__typename": "Attribute"
-              },
-              {
-                "displayValue": "41",
-                "value": "41",
-                "id": "41",
-                "__typename": "Attribute"
-              },
-              {
-                "displayValue": "42",
-                "value": "42",
-                "id": "42",
-                "__typename": "Attribute"
-              },
-              {
-                "displayValue": "43",
-                "value": "43",
-                "id": "43",
-                "__typename": "Attribute"
-              }
-            ],
-            "name": "Size",
-            "type": "text",
-            "__typename": "AttributeSet"
-          }
-        ],
-        "prices": [
-          {
-            "amount": 144.69,
-            "currency": {
-              "label": "USD",
-              "symbol": "$",
-              "__typename": "Currency"
-            },
-            "__typename": "Price"
-          }
-        ],
-        "brand": "Nike x Stussy",
-        "__typename": "Product"
-      },
-      {
-        "id": "jacket-canada-goosee",
-        "name": "Jacket",
-        "inStock": true,
-        "gallery": [
-          "https://images.canadagoose.com/image/upload/w_480,c_scale,f_auto,q_auto:best/v1576016105/product-image/2409L_61.jpg",
-          "https://images.canadagoose.com/image/upload/w_480,c_scale,f_auto,q_auto:best/v1576016107/product-image/2409L_61_a.jpg",
-          "https://images.canadagoose.com/image/upload/w_480,c_scale,f_auto,q_auto:best/v1576016108/product-image/2409L_61_b.jpg",
-          "https://images.canadagoose.com/image/upload/w_480,c_scale,f_auto,q_auto:best/v1576016109/product-image/2409L_61_c.jpg",
-          "https://images.canadagoose.com/image/upload/w_480,c_scale,f_auto,q_auto:best/v1576016110/product-image/2409L_61_d.jpg",
-          "https://images.canadagoose.com/image/upload/w_1333,c_scale,f_auto,q_auto:best/v1634058169/product-image/2409L_61_o.png",
-          "https://images.canadagoose.com/image/upload/w_1333,c_scale,f_auto,q_auto:best/v1634058159/product-image/2409L_61_p.png"
-        ],
-        "description": "<p>Awesome winter jacket</p>",
+        "description": "<p>Timeless denim jacket perfect for layering. Made with premium cotton denim for durability and comfort.</p>",
         "category": "clothes",
         "attributes": [
           {
@@ -123,11 +59,37 @@
             "name": "Size",
             "type": "text",
             "__typename": "AttributeSet"
+          },
+          {
+            "id": "Color",
+            "items": [
+              {
+                "displayValue": "Light Blue",
+                "value": "#87CEEB",
+                "id": "Light Blue",
+                "__typename": "Attribute"
+              },
+              {
+                "displayValue": "Dark Blue",
+                "value": "#003366",
+                "id": "Dark Blue",
+                "__typename": "Attribute"
+              },
+              {
+                "displayValue": "Black",
+                "value": "#000000",
+                "id": "Black",
+                "__typename": "Attribute"
+              }
+            ],
+            "name": "Color",
+            "type": "swatch",
+            "__typename": "AttributeSet"
           }
         ],
         "prices": [
           {
-            "amount": 518.47,
+            "amount": 89.99,
             "currency": {
               "label": "USD",
               "symbol": "$",
@@ -136,44 +98,227 @@
             "__typename": "Price"
           }
         ],
-        "brand": "Canada Goose",
+        "brand": "Urban Classic",
         "__typename": "Product"
       },
       {
-        "id": "ps-5",
-        "name": "PlayStation 5",
+        "id": "cotton-white-tshirt",
+        "name": "Premium Cotton T-Shirt",
         "inStock": true,
         "gallery": [
-          "https://images-na.ssl-images-amazon.com/images/I/510VSJ9mWDL._SL1262_.jpg",
-          "https://images-na.ssl-images-amazon.com/images/I/610%2B69ZsKCL._SL1500_.jpg",
-          "https://images-na.ssl-images-amazon.com/images/I/51iPoFwQT3L._SL1230_.jpg",
-          "https://images-na.ssl-images-amazon.com/images/I/61qbqFcvoNL._SL1500_.jpg",
-          "https://images-na.ssl-images-amazon.com/images/I/51HCjA3rqYL._SL1230_.jpg"
+          "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&h=800",
+          "https://images.unsplash.com/photo-1503341338985-b019d5d70888?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&h=800",
+          "https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&h=800",
+          "https://images.unsplash.com/photo-1562157873-818bc0726f68?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&h=800"
         ],
-        "description": "<p>A good gaming console. Plays games of PS4! Enjoy if you can buy it mwahahahaha</p>",
+        "description": "<p>Essential premium cotton t-shirt. Soft, breathable, and perfect for everyday wear.</p>",
+        "category": "clothes",
+        "attributes": [
+          {
+            "id": "Size",
+            "items": [
+              {
+                "displayValue": "Extra Small",
+                "value": "XS",
+                "id": "Extra Small",
+                "__typename": "Attribute"
+              },
+              {
+                "displayValue": "Small",
+                "value": "S",
+                "id": "Small",
+                "__typename": "Attribute"
+              },
+              {
+                "displayValue": "Medium",
+                "value": "M",
+                "id": "Medium",
+                "__typename": "Attribute"
+              },
+              {
+                "displayValue": "Large",
+                "value": "L",
+                "id": "Large",
+                "__typename": "Attribute"
+              },
+              {
+                "displayValue": "Extra Large",
+                "value": "XL",
+                "id": "Extra Large",
+                "__typename": "Attribute"
+              }
+            ],
+            "name": "Size",
+            "type": "text",
+            "__typename": "AttributeSet"
+          },
+          {
+            "id": "Color",
+            "items": [
+              {
+                "displayValue": "White",
+                "value": "#FFFFFF",
+                "id": "White",
+                "__typename": "Attribute"
+              },
+              {
+                "displayValue": "Black",
+                "value": "#000000",
+                "id": "Black",
+                "__typename": "Attribute"
+              },
+              {
+                "displayValue": "Gray",
+                "value": "#808080",
+                "id": "Gray",
+                "__typename": "Attribute"
+              },
+              {
+                "displayValue": "Navy",
+                "value": "#000080",
+                "id": "Navy",
+                "__typename": "Attribute"
+              }
+            ],
+            "name": "Color",
+            "type": "swatch",
+            "__typename": "AttributeSet"
+          }
+        ],
+        "prices": [
+          {
+            "amount": 24.99,
+            "currency": {
+              "label": "USD",
+              "symbol": "$",
+              "__typename": "Currency"
+            },
+            "__typename": "Price"
+          }
+        ],
+        "brand": "Essential Wear",
+        "__typename": "Product"
+      },
+      {
+        "id": "running-sneakers",
+        "name": "Performance Running Sneakers",
+        "inStock": true,
+        "gallery": [
+          "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&h=800",
+          "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&h=800",
+          "https://images.unsplash.com/photo-1549298916-b41d501d3772?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&h=800",
+          "https://images.unsplash.com/photo-1560769629-975ec94e6a86?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&h=800"
+        ],
+        "description": "<p>High-performance running sneakers with advanced cushioning and breathable mesh upper.</p>",
+        "category": "clothes",
+        "attributes": [
+          {
+            "id": "Size",
+            "items": [
+              {
+                "displayValue": "7",
+                "value": "7",
+                "id": "7",
+                "__typename": "Attribute"
+              },
+              {
+                "displayValue": "8",
+                "value": "8",
+                "id": "8",
+                "__typename": "Attribute"
+              },
+              {
+                "displayValue": "9",
+                "value": "9",
+                "id": "9",
+                "__typename": "Attribute"
+              },
+              {
+                "displayValue": "10",
+                "value": "10",
+                "id": "10",
+                "__typename": "Attribute"
+              },
+              {
+                "displayValue": "11",
+                "value": "11",
+                "id": "11",
+                "__typename": "Attribute"
+              },
+              {
+                "displayValue": "12",
+                "value": "12",
+                "id": "12",
+                "__typename": "Attribute"
+              }
+            ],
+            "name": "Size",
+            "type": "text",
+            "__typename": "AttributeSet"
+          },
+          {
+            "id": "Color",
+            "items": [
+              {
+                "displayValue": "White",
+                "value": "#FFFFFF",
+                "id": "White",
+                "__typename": "Attribute"
+              },
+              {
+                "displayValue": "Black",
+                "value": "#000000",
+                "id": "Black",
+                "__typename": "Attribute"
+              },
+              {
+                "displayValue": "Blue",
+                "value": "#0066CC",
+                "id": "Blue",
+                "__typename": "Attribute"
+              },
+              {
+                "displayValue": "Red",
+                "value": "#FF0000",
+                "id": "Red",
+                "__typename": "Attribute"
+              }
+            ],
+            "name": "Color",
+            "type": "swatch",
+            "__typename": "AttributeSet"
+          }
+        ],
+        "prices": [
+          {
+            "amount": 129.99,
+            "currency": {
+              "label": "USD",
+              "symbol": "$",
+              "__typename": "Currency"
+            },
+            "__typename": "Price"
+          }
+        ],
+        "brand": "SportMax",
+        "__typename": "Product"
+      },
+      {
+        "id": "wireless-headphones",
+        "name": "Wireless Noise-Canceling Headphones",
+        "inStock": true,
+        "gallery": [
+          "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&h=800",
+          "https://images.unsplash.com/photo-1484704849700-f032a568e944?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&h=800",
+          "https://images.unsplash.com/photo-1583394838336-acd977736f90?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&h=800",
+          "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&h=800"
+        ],
+        "description": "<p>Premium wireless headphones with active noise cancellation and 30-hour battery life.</p>",
         "category": "tech",
         "attributes": [
           {
             "id": "Color",
             "items": [
-              {
-                "displayValue": "Green",
-                "value": "#44FF03",
-                "id": "Green",
-                "__typename": "Attribute"
-              },
-              {
-                "displayValue": "Cyan",
-                "value": "#03FFF7",
-                "id": "Cyan",
-                "__typename": "Attribute"
-              },
-              {
-                "displayValue": "Blue",
-                "value": "#030BFF",
-                "id": "Blue",
-                "__typename": "Attribute"
-              },
               {
                 "displayValue": "Black",
                 "value": "#000000",
@@ -185,6 +330,18 @@
                 "value": "#FFFFFF",
                 "id": "White",
                 "__typename": "Attribute"
+              },
+              {
+                "displayValue": "Silver",
+                "value": "#C0C0C0",
+                "id": "Silver",
+                "__typename": "Attribute"
+              },
+              {
+                "displayValue": "Blue",
+                "value": "#0066CC",
+                "id": "Blue",
+                "__typename": "Attribute"
               }
             ],
             "name": "Color",
@@ -192,29 +349,29 @@
             "__typename": "AttributeSet"
           },
           {
-            "id": "Capacity",
+            "id": "Noise Cancellation",
             "items": [
               {
-                "displayValue": "512G",
-                "value": "512G",
-                "id": "512G",
+                "displayValue": "Active",
+                "value": "Active",
+                "id": "Active",
                 "__typename": "Attribute"
               },
               {
-                "displayValue": "1T",
-                "value": "1T",
-                "id": "1T",
+                "displayValue": "Passive",
+                "value": "Passive",
+                "id": "Passive",
                 "__typename": "Attribute"
               }
             ],
-            "name": "Capacity",
+            "name": "Noise Cancellation",
             "type": "text",
             "__typename": "AttributeSet"
           }
         ],
         "prices": [
           {
-            "amount": 844.02,
+            "amount": 299.99,
             "currency": {
               "label": "USD",
               "symbol": "$",
@@ -223,44 +380,65 @@
             "__typename": "Price"
           }
         ],
-        "brand": "Sony",
+        "brand": "AudioTech",
         "__typename": "Product"
       },
       {
-        "id": "xbox-series-s",
-        "name": "Xbox Series S 512GB",
-        "inStock": false,
+        "id": "gaming-laptop",
+        "name": "Gaming Laptop RTX 4060",
+        "inStock": true,
         "gallery": [
-          "https://images-na.ssl-images-amazon.com/images/I/71vPCX0bS-L._SL1500_.jpg",
-          "https://images-na.ssl-images-amazon.com/images/I/71q7JTbRTpL._SL1500_.jpg",
-          "https://images-na.ssl-images-amazon.com/images/I/71iQ4HGHtsL._SL1500_.jpg",
-          "https://images-na.ssl-images-amazon.com/images/I/61IYrCrBzxL._SL1500_.jpg",
-          "https://images-na.ssl-images-amazon.com/images/I/61RnXmpAmIL._SL1500_.jpg"
+          "https://images.unsplash.com/photo-1603302576837-37561b2e2302?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&h=800",
+          "https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&h=800",
+          "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&h=800",
+          "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&h=800"
         ],
-        "description": "\n<div>\n    <ul>\n        <li><span>Hardware-beschleunigtes Raytracing macht dein Spiel noch realistischer</span></li>\n        <li><span>Spiele Games mit bis zu 120 Bilder pro Sekunde</span></li>\n        <li><span>Minimiere Ladezeiten mit einer speziell entwickelten 512GB NVMe SSD und wechsle mit Quick Resume nahtlos zwischen mehreren Spielen.</span></li>\n        <li><span>Xbox Smart Delivery stellt sicher, dass du die beste Version deines Spiels spielst, egal, auf welcher Konsole du spielst</span></li>\n        <li><span>Spiele deine Xbox One-Spiele auf deiner Xbox Series S weiter. Deine Fortschritte, Erfolge und Freundesliste werden automatisch auf das neue System übertragen.</span></li>\n        <li><span>Erwecke deine Spiele und Filme mit innovativem 3D Raumklang zum Leben</span></li>\n        <li><span>Der brandneue Xbox Wireless Controller zeichnet sich durch höchste Präzision, eine neue Share-Taste und verbesserte Ergonomie aus</span></li>\n        <li><span>Ultra-niedrige Latenz verbessert die Reaktionszeit von Controller zum Fernseher</span></li>\n        <li><span>Verwende dein Xbox One-Gaming-Zubehör -einschließlich Controller, Headsets und mehr</span></li>\n        <li><span>Erweitere deinen Speicher mit der Seagate 1 TB-Erweiterungskarte für Xbox Series X (separat erhältlich) und streame 4K-Videos von Disney+, Netflix, Amazon, Microsoft Movies &amp; TV und mehr</span></li>\n    </ul>\n</div>",
+        "description": "<p>High-performance gaming laptop with RTX 4060 graphics, 16GB RAM, and 144Hz display.</p>",
         "category": "tech",
         "attributes": [
           {
-            "id": "Color",
+            "id": "RAM",
             "items": [
               {
-                "displayValue": "Green",
-                "value": "#44FF03",
-                "id": "Green",
+                "displayValue": "16GB",
+                "value": "16GB",
+                "id": "16GB",
                 "__typename": "Attribute"
               },
               {
-                "displayValue": "Cyan",
-                "value": "#03FFF7",
-                "id": "Cyan",
+                "displayValue": "32GB",
+                "value": "32GB",
+                "id": "32GB",
+                "__typename": "Attribute"
+              }
+            ],
+            "name": "RAM",
+            "type": "text",
+            "__typename": "AttributeSet"
+          },
+          {
+            "id": "Storage",
+            "items": [
+              {
+                "displayValue": "512GB SSD",
+                "value": "512GB",
+                "id": "512GB",
                 "__typename": "Attribute"
               },
               {
-                "displayValue": "Blue",
-                "value": "#030BFF",
-                "id": "Blue",
+                "displayValue": "1TB SSD",
+                "value": "1TB",
+                "id": "1TB",
                 "__typename": "Attribute"
-              },
+              }
+            ],
+            "name": "Storage",
+            "type": "text",
+            "__typename": "AttributeSet"
+          },
+          {
+            "id": "Color",
+            "items": [
               {
                 "displayValue": "Black",
                 "value": "#000000",
@@ -268,40 +446,20 @@
                 "__typename": "Attribute"
               },
               {
-                "displayValue": "White",
-                "value": "#FFFFFF",
-                "id": "White",
+                "displayValue": "RGB",
+                "value": "#FF00FF",
+                "id": "RGB",
                 "__typename": "Attribute"
               }
             ],
             "name": "Color",
             "type": "swatch",
             "__typename": "AttributeSet"
-          },
-          {
-            "id": "Capacity",
-            "items": [
-              {
-                "displayValue": "512G",
-                "value": "512G",
-                "id": "512G",
-                "__typename": "Attribute"
-              },
-              {
-                "displayValue": "1T",
-                "value": "1T",
-                "id": "1T",
-                "__typename": "Attribute"
-              }
-            ],
-            "name": "Capacity",
-            "type": "text",
-            "__typename": "AttributeSet"
           }
         ],
         "prices": [
           {
-            "amount": 333.99,
+            "amount": 1299.99,
             "currency": {
               "label": "USD",
               "symbol": "$",
@@ -310,22 +468,31 @@
             "__typename": "Price"
           }
         ],
-        "brand": "Microsoft",
+        "brand": "GameForce",
         "__typename": "Product"
       },
       {
-        "id": "apple-imac-2021",
-        "name": "iMac 2021",
+        "id": "smartphone-pro",
+        "name": "Smartphone Pro Max 256GB",
         "inStock": true,
         "gallery": [
-          "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/imac-24-blue-selection-hero-202104?wid=904&hei=840&fmt=jpeg&qlt=80&.v=1617492405000"
+          "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&h=800",
+          "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&h=800",
+          "https://images.unsplash.com/photo-1574944985070-8f3ebc6b79d2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&h=800",
+          "https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&h=800"
         ],
-        "description": "The new iMac!",
+        "description": "<p>Latest flagship smartphone with triple camera system, 256GB storage, and all-day battery life.</p>",
         "category": "tech",
         "attributes": [
           {
-            "id": "Capacity",
+            "id": "Storage",
             "items": [
+              {
+                "displayValue": "128GB",
+                "value": "128GB",
+                "id": "128GB",
+                "__typename": "Attribute"
+              },
               {
                 "displayValue": "256GB",
                 "value": "256GB",
@@ -339,92 +506,7 @@
                 "__typename": "Attribute"
               }
             ],
-            "name": "Capacity",
-            "type": "text",
-            "__typename": "AttributeSet"
-          },
-          {
-            "id": "With USB 3 ports",
-            "items": [
-              {
-                "displayValue": "Yes",
-                "value": "Yes",
-                "id": "Yes",
-                "__typename": "Attribute"
-              },
-              {
-                "displayValue": "No",
-                "value": "No",
-                "id": "No",
-                "__typename": "Attribute"
-              }
-            ],
-            "name": "With USB 3 ports",
-            "type": "text",
-            "__typename": "AttributeSet"
-          },
-          {
-            "id": "Touch ID in keyboard",
-            "items": [
-              {
-                "displayValue": "Yes",
-                "value": "Yes",
-                "id": "Yes",
-                "__typename": "Attribute"
-              },
-              {
-                "displayValue": "No",
-                "value": "No",
-                "id": "No",
-                "__typename": "Attribute"
-              }
-            ],
-            "name": "Touch ID in keyboard",
-            "type": "text",
-            "__typename": "AttributeSet"
-          }
-        ],
-        "prices": [
-          {
-            "amount": 1688.03,
-            "currency": {
-              "label": "USD",
-              "symbol": "$",
-              "__typename": "Currency"
-            },
-            "__typename": "Price"
-          }
-        ],
-        "brand": "Apple",
-        "__typename": "Product"
-      },
-      {
-        "id": "apple-iphone-12-pro",
-        "name": "iPhone 12 Pro",
-        "inStock": true,
-        "gallery": [
-          "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-12-pro-family-hero?wid=940&amp;hei=1112&amp;fmt=jpeg&amp;qlt=80&amp;.v=1604021663000"
-        ],
-        "description": "This is iPhone 12. Nothing else to say.",
-        "category": "tech",
-        "attributes": [
-          {
-            "id": "Capacity",
-            "items": [
-              {
-                "displayValue": "512G",
-                "value": "512G",
-                "id": "512G",
-                "__typename": "Attribute"
-              },
-              {
-                "displayValue": "1T",
-                "value": "1T",
-                "id": "1T",
-                "__typename": "Attribute"
-              }
-            ],
-            "name": "Capacity",
+            "name": "Storage",
             "type": "text",
             "__typename": "AttributeSet"
           },
@@ -432,33 +514,27 @@
             "id": "Color",
             "items": [
               {
-                "displayValue": "Green",
-                "value": "#44FF03",
-                "id": "Green",
-                "__typename": "Attribute"
-              },
-              {
-                "displayValue": "Cyan",
-                "value": "#03FFF7",
-                "id": "Cyan",
-                "__typename": "Attribute"
-              },
-              {
-                "displayValue": "Blue",
-                "value": "#030BFF",
-                "id": "Blue",
-                "__typename": "Attribute"
-              },
-              {
-                "displayValue": "Black",
+                "displayValue": "Midnight Black",
                 "value": "#000000",
-                "id": "Black",
+                "id": "Midnight Black",
                 "__typename": "Attribute"
               },
               {
-                "displayValue": "White",
+                "displayValue": "Pearl White",
                 "value": "#FFFFFF",
-                "id": "White",
+                "id": "Pearl White",
+                "__typename": "Attribute"
+              },
+              {
+                "displayValue": "Ocean Blue",
+                "value": "#0066CC",
+                "id": "Ocean Blue",
+                "__typename": "Attribute"
+              },
+              {
+                "displayValue": "Rose Gold",
+                "value": "#E8B4B8",
+                "id": "Rose Gold",
                 "__typename": "Attribute"
               }
             ],
@@ -469,7 +545,7 @@
         ],
         "prices": [
           {
-            "amount": 1000.76,
+            "amount": 899.99,
             "currency": {
               "label": "USD",
               "symbol": "$",
@@ -478,22 +554,72 @@
             "__typename": "Price"
           }
         ],
-        "brand": "Apple",
+        "brand": "TechMax",
         "__typename": "Product"
       },
       {
-        "id": "apple-airpods-pro",
-        "name": "AirPods Pro",
+        "id": "smart-watch",
+        "name": "Smart Fitness Watch",
         "inStock": false,
         "gallery": [
-          "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MWP22?wid=572&hei=572&fmt=jpeg&qlt=95&.v=1591634795000"
+          "https://images.unsplash.com/photo-1544117519-31a4b719223d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&h=800",
+          "https://images.unsplash.com/photo-1579586337278-3f436f25d4d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&h=800",
+          "https://images.unsplash.com/photo-1434493789847-2f02dc6ca35d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&h=800",
+          "https://images.unsplash.com/photo-1606220588913-b3aacb4d2f46?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&h=800"
         ],
-        "description": "\n<h3>Magic like you’ve never heard</h3>\n<p>AirPods Pro have been designed to deliver Active Noise Cancellation for immersive sound, Transparency mode so you can hear your surroundings, and a customizable fit for all-day comfort. Just like AirPods, AirPods Pro connect magically to your iPhone or Apple Watch. And they’re ready to use right out of the case.\n\n<h3>Active Noise Cancellation</h3>\n<p>Incredibly light noise-cancelling headphones, AirPods Pro block out your environment so you can focus on what you’re listening to. AirPods Pro use two microphones, an outward-facing microphone and an inward-facing microphone, to create superior noise cancellation. By continuously adapting to the geometry of your ear and the fit of the ear tips, Active Noise Cancellation silences the world to keep you fully tuned in to your music, podcasts, and calls.\n\n<h3>Transparency mode</h3>\n<p>Switch to Transparency mode and AirPods Pro let the outside sound in, allowing you to hear and connect to your surroundings. Outward- and inward-facing microphones enable AirPods Pro to undo the sound-isolating effect of the silicone tips so things sound and feel natural, like when you’re talking to people around you.</p>\n\n<h3>All-new design</h3>\n<p>AirPods Pro offer a more customizable fit with three sizes of flexible silicone tips to choose from. With an internal taper, they conform to the shape of your ear, securing your AirPods Pro in place and creating an exceptional seal for superior noise cancellation.</p>\n\n<h3>Amazing audio quality</h3>\n<p>A custom-built high-excursion, low-distortion driver delivers powerful bass. A superefficient high dynamic range amplifier produces pure, incredibly clear sound while also extending battery life. And Adaptive EQ automatically tunes music to suit the shape of your ear for a rich, consistent listening experience.</p>\n\n<h3>Even more magical</h3>\n<p>The Apple-designed H1 chip delivers incredibly low audio latency. A force sensor on the stem makes it easy to control music and calls and switch between Active Noise Cancellation and Transparency mode. Announce Messages with Siri gives you the option to have Siri read your messages through your AirPods. And with Audio Sharing, you and a friend can share the same audio stream on two sets of AirPods — so you can play a game, watch a movie, or listen to a song together.</p>\n",
+        "description": "<p>Advanced fitness tracking smartwatch with heart rate monitoring, GPS, and 7-day battery life.</p>",
         "category": "tech",
-        "attributes": [],
+        "attributes": [
+          {
+            "id": "Band Material",
+            "items": [
+              {
+                "displayValue": "Sport Band",
+                "value": "Sport",
+                "id": "Sport",
+                "__typename": "Attribute"
+              },
+              {
+                "displayValue": "Leather",
+                "value": "Leather",
+                "id": "Leather",
+                "__typename": "Attribute"
+              },
+              {
+                "displayValue": "Metal",
+                "value": "Metal",
+                "id": "Metal",
+                "__typename": "Attribute"
+              }
+            ],
+            "name": "Band Material",
+            "type": "text",
+            "__typename": "AttributeSet"
+          },
+          {
+            "id": "Size",
+            "items": [
+              {
+                "displayValue": "40mm",
+                "value": "40mm",
+                "id": "40mm",
+                "__typename": "Attribute"
+              },
+              {
+                "displayValue": "44mm",
+                "value": "44mm",
+                "id": "44mm",
+                "__typename": "Attribute"
+              }
+            ],
+            "name": "Size",
+            "type": "text",
+            "__typename": "AttributeSet"
+          }
+        ],
         "prices": [
           {
-            "amount": 300.23,
+            "amount": 249.99,
             "currency": {
               "label": "USD",
               "symbol": "$",
@@ -502,22 +628,72 @@
             "__typename": "Price"
           }
         ],
-        "brand": "Apple",
+        "brand": "FitTech",
         "__typename": "Product"
       },
       {
-        "id": "apple-airtag",
-        "name": "AirTag",
+        "id": "wireless-earbuds",
+        "name": "True Wireless Earbuds",
         "inStock": true,
         "gallery": [
-          "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/airtag-double-select-202104?wid=445&hei=370&fmt=jpeg&qlt=95&.v=1617761672000"
+          "https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&h=800",
+          "https://images.unsplash.com/photo-1606220588913-b3aacb4d2f46?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&h=800",
+          "https://images.unsplash.com/photo-1585298723682-7115561c51b7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&h=800",
+          "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&h=800"
         ],
-        "description": "\n<h1>Lose your knack for losing things.</h1>\n<p>AirTag is an easy way to keep track of your stuff. Attach one to your keys, slip another one in your backpack. And just like that, they’re on your radar in the Find My app. AirTag has your back.</p>\n",
+        "description": "<p>Compact true wireless earbuds with noise cancellation and wireless charging case.</p>",
         "category": "tech",
-        "attributes": [],
+        "attributes": [
+          {
+            "id": "Color",
+            "items": [
+              {
+                "displayValue": "White",
+                "value": "#FFFFFF",
+                "id": "White",
+                "__typename": "Attribute"
+              },
+              {
+                "displayValue": "Black",
+                "value": "#000000",
+                "id": "Black",
+                "__typename": "Attribute"
+              },
+              {
+                "displayValue": "Silver",
+                "value": "#C0C0C0",
+                "id": "Silver",
+                "__typename": "Attribute"
+              }
+            ],
+            "name": "Color",
+            "type": "swatch",
+            "__typename": "AttributeSet"
+          },
+          {
+            "id": "Battery Life",
+            "items": [
+              {
+                "displayValue": "6 hours",
+                "value": "6h",
+                "id": "6h",
+                "__typename": "Attribute"
+              },
+              {
+                "displayValue": "8 hours",
+                "value": "8h",
+                "id": "8h",
+                "__typename": "Attribute"
+              }
+            ],
+            "name": "Battery Life",
+            "type": "text",
+            "__typename": "AttributeSet"
+          }
+        ],
         "prices": [
           {
-            "amount": 120.57,
+            "amount": 179.99,
             "currency": {
               "label": "USD",
               "symbol": "$",
@@ -526,7 +702,7 @@
             "__typename": "Price"
           }
         ],
-        "brand": "Apple",
+        "brand": "SoundWave",
         "__typename": "Product"
       }
     ]
