@@ -1,7 +1,7 @@
 <?php
 
 require_once __DIR__ . '/../vendor/autoload.php';
-
+echo "the page works well";
 $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
   $r->post('/graphql', [App\Controller\GraphQL::class, 'handle']);
 });
