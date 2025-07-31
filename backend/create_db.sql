@@ -4,7 +4,7 @@ DATABASE IF NOT EXISTS ecommerce_catalog;
 USE ecommerce_catalog;
 
 -- Categories table
-CREATE TABLE categories
+CREATE TABLE IF NOT EXISTS categories
 (
     id         INT PRIMARY KEY AUTO_INCREMENT,
     name       VARCHAR(100) NOT NULL UNIQUE,
@@ -12,7 +12,7 @@ CREATE TABLE categories
 );
 
 -- Products table
-CREATE TABLE products
+CREATE TABLE IF NOT EXISTS products
 (
     id            VARCHAR(100) PRIMARY KEY,
     name          VARCHAR(255) NOT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE products
 );
 
 -- Product galleries
-CREATE TABLE product_galleries
+CREATE TABLE IF NOT EXISTS product_galleries
 (
     id         INT PRIMARY KEY AUTO_INCREMENT,
     product_id VARCHAR(100) NOT NULL,
@@ -35,7 +35,7 @@ CREATE TABLE product_galleries
 );
 
 -- Currencies
-CREATE TABLE currencies
+CREATE TABLE IF NOT EXISTS currencies
 (
     code   VARCHAR(10) PRIMARY KEY,
     label  VARCHAR(50) NOT NULL,
@@ -43,7 +43,7 @@ CREATE TABLE currencies
 );
 
 -- Product prices
-CREATE TABLE product_prices
+CREATE TABLE IF NOT EXISTS product_prices
 (
     id            INT PRIMARY KEY AUTO_INCREMENT,
     product_id    VARCHAR(100)   NOT NULL,
@@ -54,7 +54,7 @@ CREATE TABLE product_prices
 );
 
 -- Attribute sets (like "Size", "Color")
-CREATE TABLE attribute_sets
+CREATE TABLE IF NOT EXISTS attribute_sets
 (
     id   VARCHAR(100) PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -62,7 +62,7 @@ CREATE TABLE attribute_sets
 );
 
 -- Attribute items (like "Small", "Medium", "Red", "Blue")
-CREATE TABLE attribute_items
+CREATE TABLE IF NOT EXISTS attribute_items
 (
     id               VARCHAR(100) PRIMARY KEY,
     attribute_set_id VARCHAR(100) NOT NULL,
@@ -72,7 +72,7 @@ CREATE TABLE attribute_items
 );
 
 -- Product attributes (linking products to their available attributes)
-CREATE TABLE product_attributes
+CREATE TABLE IF NOT EXISTS product_attributes
 (
     id               INT PRIMARY KEY AUTO_INCREMENT,
     product_id       VARCHAR(100) NOT NULL,
