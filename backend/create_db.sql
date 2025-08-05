@@ -49,6 +49,7 @@ CREATE TABLE IF NOT EXISTS product_prices
     product_id    VARCHAR(100)   NOT NULL,
     amount        DECIMAL(10, 2) NOT NULL,
     currency_code VARCHAR(10)    NOT NULL,
+    sort_order    INT DEFAULT 0,
     FOREIGN KEY (product_id) REFERENCES products (id) ON DELETE CASCADE,
     FOREIGN KEY (currency_code) REFERENCES currencies (code)
 );
