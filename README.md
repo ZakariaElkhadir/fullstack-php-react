@@ -1,4 +1,4 @@
-# Fullstack PHP + React Application
+# Fullstack PHP + React Ecommerce-website
 
 A modern fullstack web application built with PHP backend and React TypeScript frontend.
 
