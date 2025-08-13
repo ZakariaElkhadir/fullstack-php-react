@@ -1,15 +1,67 @@
-# React + TypeScript + Vite
+# Fullstack PHP + React Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern fullstack web application built with PHP backend and React TypeScript frontend.
 
-Currently, two official plugins are available:
+## 🚀 Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Frontend
+- **React** with TypeScript
+- **Vite** for fast development and building
+- **ESLint** for code quality
 
-## Expanding the ESLint configuration
+### Backend
+- **PHP** for server-side logic
+- RESTful API design
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 📁 Project Structure
+
+```
+fullstack-php-react/
+├── frontend/          # React TypeScript application
+├── backend/           # PHP API server
+├── docs/             # Documentation
+└── README.md         # This file
+```
+
+## 🛠️ Getting Started
+
+### Prerequisites
+- Node.js (v18 or higher)
+- PHP (v8.0 or higher)
+- Composer (for PHP dependencies)
+- npm or yarn
+
+### Frontend Setup
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+### Backend Setup
+```bash
+cd backend
+composer install
+php -S localhost:8000
+```
+
+## 📝 Development
+
+### Frontend Development
+The React frontend uses Vite for fast HMR and TypeScript for type safety.
+
+Available scripts:
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run lint` - Run ESLint
+- `npm run preview` - Preview production build
+
+### Backend Development
+PHP backend provides RESTful API endpoints for the frontend.
+
+## 🔧 ESLint Configuration
+
+For production applications, consider enabling type-aware lint rules:
 
 ```js
 export default tseslint.config([
@@ -17,53 +69,31 @@ export default tseslint.config([
   {
     files: ['**/*.{ts,tsx}'],
     extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
       ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
       ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
       ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
     ],
     languageOptions: {
       parserOptions: {
         project: ['./tsconfig.node.json', './tsconfig.app.json'],
         tsconfigRootDir: import.meta.dirname,
       },
-      // other options...
     },
   },
 ])
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 📚 API Documentation
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+API documentation will be available at `/docs` when the backend server is running.
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
+
+## 📄 License
+
+This project is licensed under the MIT License.
