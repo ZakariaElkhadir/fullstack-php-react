@@ -2,12 +2,13 @@
 
 namespace App\Config;
 
-use mysqli;
+use PDO;
+use PDOException;
 use Exception;
 
 class Database
 {
-    private ?mysqli $connection = null;
+    private ?PDO $connection = null;
     private string $host;
     private string $username;
     private string $password;
@@ -21,9 +22,6 @@ class Database
         $this->connect();
     }
 
-    /**
-     * Load environment variables from .env file
-     */
     private function loadEnvironmentVariables(): void
     {
         $envFile = __DIR__ . '/../../.env';
@@ -48,7 +46,6 @@ class Database
                 $name = trim($name);
                 $value = trim($value);
 
-                // Remove quotes if present
                 if (preg_match('/^["\'].*["\']$/', $value)) {
                     $value = substr($value, 1, -1);
                 }
@@ -65,44 +62,28 @@ class Database
         $this->charset = $_ENV['DB_CHARSET'] ?? 'utf8mb4';
     }
 
-    /**
-     * Establish database connection
-     *
-     * @throws Exception When connection fails
-     */
     private function connect(): void
     {
+        $dsn = "mysql:host={$this->host};dbname={$this->database};port={$this->port};charset={$this->charset}";
         try {
-            $this->connection = new mysqli(
-                $this->host,
-                $this->username,
-                $this->password,
-                $this->database,
-                $this->port
-            );
-
-            if ($this->connection->connect_error) {
-                throw new Exception("Connection failed: " . $this->connection->connect_error);
-            }
-
-            if (!$this->connection->set_charset($this->charset)) {
-                throw new Exception("Error setting charset: " . $this->connection->error);
-            }
-
-            echo "Database connected successfully!\n";
-        } catch (Exception $e) {
+            $this->connection = new PDO($dsn, $this->username, $this->password, [
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            ]);
+            // echo "Database connected successfully!\n";
+        } catch (PDOException $e) {
             $this->connection = null;
             throw new Exception("Database connection error: " . $e->getMessage());
         }
     }
 
     /**
-     * Get the MySQLi connection instance
+     * Get the PDO connection instance
      *
-     * @return mysqli The database connection
+     * @return PDO The database connection
      * @throws Exception When no connection is available
      */
-    public function getConnection(): mysqli
+    public function getConnection(): PDO
     {
         if ($this->connection === null) {
             throw new Exception("No database connection available");
@@ -115,7 +96,7 @@ class Database
      */
     public function isConnected(): bool
     {
-        return $this->connection !== null && $this->connection->ping();
+        return $this->connection !== null;
     }
 
     /**
@@ -123,15 +104,9 @@ class Database
      */
     public function close(): void
     {
-        if ($this->connection !== null) {
-            $this->connection->close();
-            $this->connection = null;
-        }
+        $this->connection = null;
     }
 
-    /**
-     * Destructor - automatically close connection
-     */
     public function __destruct()
     {
         $this->close();

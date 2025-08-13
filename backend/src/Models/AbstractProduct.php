@@ -2,170 +2,158 @@
 
 namespace App\Models;
 
-use App\Config\Database;
-use Exception;
+use PDO;
 
 /**
- * Fixed version of the simple AbstractProduct to meet ScandiWeb requirements
+ * AbstractProduct class - defines the structure and common behavior for all product types
  */
 abstract class AbstractProduct
 {
-    protected string $id;
-    protected string $name;
-    protected array $prices;        // Changed from single price
-    protected array $gallery;       // Changed from images
-    protected string $categoryName;
-    protected bool $inStock;        // Changed from int to bool
-    protected string $brand;        // Added required field
-    protected ?string $description; // Added required field
-    protected array $attributes;    // Added required field
+    protected ?string $id = null;
+    protected ?string $name = null;
+    protected array $prices = [];
+    protected array $gallery = [];
+    protected ?string $categoryName = null;
+    protected bool $inStock = false;
+    protected ?string $brand = null;
+    protected ?string $description = null;
+    protected array $attributes = [];
 
     public function __construct(
-        string $id,
-        string $name,
-        array $prices,          // Now array of price objects
-        array $gallery,
-        string $categoryName,
-        bool $inStock,          // Now boolean
-        string $brand,          // Added
-        ?string $description,   // Added
-        array $attributes = []  // Added
+        $id,
+        $name,
+        $prices,
+        $gallery,
+        ?string $categoryName,
+        $inStock,
+        $brand,
+        $description,
+        $attributes
     ) {
-        $this->id = $id;
-        $this->name = $name;
-        $this->prices = $prices;
-        $this->gallery = $gallery;
-        $this->categoryName = $categoryName;
-        $this->inStock = $inStock;
-        $this->brand = $brand;
-        $this->description = $description;
-        $this->attributes = $attributes;
+        $this->setId($id);
+        $this->setName($name);
+        $this->setPrices($prices);
+        $this->setGallery($gallery);
+        $this->setCategoryName($categoryName);
+        $this->setInStock($inStock);
+        $this->setBrand($brand);
+        $this->setDescription($description);
+        $this->setAttributes($attributes);
     }
 
-    // REQUIRED: Abstract method for polymorphic attribute processing
     abstract protected function processAttributes(array $rawAttributes): array;
+    abstract public static function findAll(): array;
 
-    // REQUIRED: Abstract method for type-specific behavior
-    abstract public static function findById(string $id): ?self;
-
-    // REQUIRED: Factory method for polymorphism
-    abstract public static function createFromType(string $type): ?self;
-
-    /**
-     * Load product from database (required for task)
-     */
-    public static function loadFromDatabase(string $productId): ?array
+    protected static function createFromArray(array $data, PDO $connection): static
     {
-        try {
-            $database = new Database();
-            $connection = $database->getConnection();
+        $prices = static::loadPrices($data['id'], $connection);
+        $gallery = static::loadGallery($data['id'], $connection);
+        $attributes = static::loadAttributes($data['id'], $connection);
 
-            // Load basic data
-            $stmt = $connection->prepare("
-                SELECT p.*, pt.type_name 
-                FROM products p 
-                JOIN product_types pt ON p.type_id = pt.id 
-                WHERE p.id = ?
-            ");
-            $stmt->bind_param("s", $productId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-
-            if (!$row = $result->fetch_assoc()) {
-                return null;
-            }
-
-            // Load prices with currencies
-            $priceStmt = $connection->prepare("
-                SELECT pp.amount, c.label, c.symbol 
-                FROM product_prices pp 
-                JOIN currencies c ON pp.currency_id = c.id 
-                WHERE pp.product_id = ?
-            ");
-            $priceStmt->bind_param("s", $productId);
-            $priceStmt->execute();
-            $priceResult = $priceStmt->get_result();
-
-            $prices = [];
-            while ($priceRow = $priceResult->fetch_assoc()) {
-                $prices[] = [
-                    'amount' => (float)$priceRow['amount'],
-                    'currency' => [
-                        'label' => $priceRow['label'],
-                        'symbol' => $priceRow['symbol']
-                    ]
-                ];
-            }
-
-            // Load gallery
-            $galleryStmt = $connection->prepare("
-                SELECT image_url 
-                FROM product_gallery 
-                WHERE product_id = ? 
-                ORDER BY sort_order
-            ");
-            $galleryStmt->bind_param("s", $productId);
-            $galleryStmt->execute();
-            $galleryResult = $galleryStmt->get_result();
-
-            $gallery = [];
-            while ($galleryRow = $galleryResult->fetch_assoc()) {
-                $gallery[] = $galleryRow['image_url'];
-            }
-
-            // Load attributes
-            $attrStmt = $connection->prepare("
-                SELECT pa.name, pa.type, pai.display_value, pai.value
-                FROM product_attributes pa
-                JOIN product_attribute_items pai ON pa.id = pai.attribute_id
-                WHERE pa.product_id = ?
-            ");
-            $attrStmt->bind_param("s", $productId);
-            $attrStmt->execute();
-            $attrResult = $attrStmt->get_result();
-
-            $rawAttributes = [];
-            while ($attrRow = $attrResult->fetch_assoc()) {
-                $rawAttributes[$attrRow['name']]['name'] = $attrRow['name'];
-                $rawAttributes[$attrRow['name']]['type'] = $attrRow['type'];
-                $rawAttributes[$attrRow['name']]['items'][] = [
-                    'displayValue' => $attrRow['display_value'],
-                    'value' => $attrRow['value']
-                ];
-            }
-
-            return [
-                'id' => $row['id'],
-                'name' => $row['name'],
-                'prices' => $prices,
-                'gallery' => $gallery,
-                'category_name' => $row['category_name'],
-                'in_stock' => (bool)$row['in_stock'],
-                'brand' => $row['brand'],
-                'description' => $row['description'],
-                'type' => $row['type_name'],
-                'raw_attributes' => array_values($rawAttributes)
-            ];
-
-        } catch (Exception $e) {
-            throw new Exception("Error loading product: " . $e->getMessage());
-        }
+        return new static(
+            $data['id'],
+            $data['name'],
+            $prices,
+            $gallery,
+            $data['category_name'] ?? '',
+            (bool)($data['in_stock'] ?? false),
+            $data['brand'] ?? '',
+            $data['description'] ?? null,
+            $attributes
+        );
     }
 
-    // Getters (required for GraphQL)
-    public function getId(): string { return $this->id; }
-    public function getName(): string { return $this->name; }
+    protected static function loadPrices(string $productId, PDO $connection): array
+    {
+        $sql = "SELECT pp.amount, c.code, c.label, c.symbol 
+                FROM product_prices pp 
+                JOIN currencies c ON pp.currency_code = c.code 
+                WHERE pp.product_id = ? 
+                ORDER BY pp.sort_order";
+
+        $stmt = $connection->prepare($sql);
+        $stmt->execute([$productId]);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    protected static function loadGallery(string $productId, PDO $connection): array
+    {
+        $sql = "SELECT image_url 
+                FROM product_galleries 
+                WHERE product_id = ? 
+                ORDER BY sort_order";
+
+        $stmt = $connection->prepare($sql);
+        $stmt->execute([$productId]);
+
+        $gallery = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $gallery[] = $row['image_url'];
+        }
+
+        return $gallery;
+    }
+
+    protected static function loadAttributes(string $productId, PDO $connection): array
+    {
+        $sql = "SELECT ats.id, ats.name, ats.type,
+                       ati.id as item_id, ati.display_value, ati.value
+                FROM product_attributes pa
+                JOIN attribute_sets ats ON pa.attribute_set_id = ats.id
+                LEFT JOIN attribute_items ati ON ats.id = ati.attribute_set_id
+                WHERE pa.product_id = ?
+                ORDER BY ats.name, ati.display_value";
+
+        $stmt = $connection->prepare($sql);
+        $stmt->execute([$productId]);
+
+        $attributes = [];
+        $currentSet = null;
+
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            if ($currentSet !== $row['id']) {
+                $currentSet = $row['id'];
+                $attributes[$currentSet] = [
+                    'id' => $row['id'],
+                    'name' => $row['name'],
+                    'type' => $row['type'],
+                    'items' => []
+                ];
+            }
+
+            if ($row['item_id']) {
+                $attributes[$currentSet]['items'][] = [
+                    'id' => $row['item_id'],
+                    'display_value' => $row['display_value'],
+                    'value' => $row['value']
+                ];
+            }
+        }
+
+        return array_values($attributes);
+    }
+
+    protected function setId(string $id): void { $this->id = $id; }
+    protected function setName(string $name): void { $this->name = $name; }
+    protected function setPrices(array $prices): void { $this->prices = $prices; }
+    protected function setGallery(array $gallery): void { $this->gallery = $gallery; }
+    protected function setCategoryName(?string $categoryName): void { $this->categoryName = $categoryName; }
+    protected function setInStock(bool $inStock): void { $this->inStock = $inStock; }
+    protected function setBrand(string $brand): void { $this->brand = $brand; }
+    protected function setDescription(?string $description): void { $this->description = $description; }
+    protected function setAttributes(array $attributes): void { $this->attributes = $attributes; }
+
+    public function getId(): ?string { return $this->id; }
+    public function getName(): ?string { return $this->name; }
     public function getPrices(): array { return $this->prices; }
     public function getGallery(): array { return $this->gallery; }
-    public function getCategoryName(): string { return $this->categoryName; }
+    public function getCategoryName(): ?string { return $this->categoryName; }
     public function isInStock(): bool { return $this->inStock; }
-    public function getBrand(): string { return $this->brand; }
+    public function getBrand(): ?string { return $this->brand; }
     public function getDescription(): ?string { return $this->description; }
     public function getAttributes(): array { return $this->attributes; }
 
-    /**
-     * Convert to array for GraphQL
-     */
     public function toArray(): array
     {
         return [
@@ -179,11 +167,5 @@ abstract class AbstractProduct
             'description' => $this->getDescription(),
             'attributes' => $this->getAttributes()
         ];
-    }
-
-    // Keep your original method but make it more useful
-    public function getDetails(): array
-    {
-        return $this->toArray();
     }
 }

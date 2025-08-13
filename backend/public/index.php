@@ -1,29 +1,18 @@
 <?php
 
 require_once __DIR__ . '/../vendor/autoload.php';
-echo "the page works well";
+
 $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
   $r->post('/graphql', [App\Controller\GraphQL::class, 'handle']);
+  $r->addRoute('OPTIONS', '/graphql', function() {
+    // Handle CORS preflight
+    header('Access-Control-Allow-Origin: *');
+    header('Access-Control-Allow-Methods: POST, OPTIONS');
+    header('Access-Control-Allow-Headers: Content-Type');
+    return '';
+  });
 });
-/**
- * test with rest
- */
-$dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
-    $r->post('/graphql', [App\Controller\GraphQL::class, 'handle']);
-    // Add this line for REST test endpoint
-    $r->get('/api/products', function () {
-        header('Content-Type: application/json');
-        try {
-            $products = \App\Models\Product::findAll();
-            echo json_encode(\App\Models\Product::toArrayCollection($products));
-        } catch (Exception $e) {
-            http_response_code(500);
-            echo json_encode(['error' => $e->getMessage()]);
-        }
-        return '';
-    });
-});
-/*===============================================================*/
+
 
 $routeInfo = $dispatcher->dispatch(
   $_SERVER['REQUEST_METHOD'],
