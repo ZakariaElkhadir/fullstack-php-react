@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS products
     category_name VARCHAR(100),
     in_stock      BOOLEAN   DEFAULT TRUE,
     created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (category_name) REFERENCES categories (name) ON UPDATE CASCADE
 );
 
@@ -81,6 +82,30 @@ CREATE TABLE IF NOT EXISTS product_attributes
     FOREIGN KEY (product_id) REFERENCES products (id) ON DELETE CASCADE,
     FOREIGN KEY (attribute_set_id) REFERENCES attribute_sets (id) ON DELETE CASCADE,
     UNIQUE KEY unique_product_attribute (product_id, attribute_set_id)
+);
+
+-- Orders table for order management
+CREATE TABLE IF NOT EXISTS orders
+(
+    id             VARCHAR(100) PRIMARY KEY,
+    customer_email VARCHAR(255) NOT NULL,
+    total_amount   DECIMAL(10, 2) NOT NULL,
+    currency       VARCHAR(10) DEFAULT 'USD',
+    status         VARCHAR(50) DEFAULT 'pending',
+    created_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Order items table
+CREATE TABLE IF NOT EXISTS order_items
+(
+    id                   INT PRIMARY KEY AUTO_INCREMENT,
+    order_id             VARCHAR(100) NOT NULL,
+    product_id           VARCHAR(100) NOT NULL,
+    quantity             INT NOT NULL,
+    selected_attributes  JSON,
+    price                DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (order_id) REFERENCES orders (id) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES products (id)
 );
 
 -- Indexes for better performance
