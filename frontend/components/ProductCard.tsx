@@ -47,7 +47,10 @@ const GET_PRODUCTS = gql`
   }
 `;
 
-const ProductCard = ({ selectedCategory, onCategoriesLoaded }: ProductCardProp) => {
+const ProductCard = ({
+  selectedCategory,
+  onCategoriesLoaded,
+}: ProductCardProp) => {
   const { loading, error, data } = useQuery(GET_PRODUCTS);
 
   const availableCategories = React.useMemo(() => {
@@ -56,31 +59,30 @@ const ProductCard = ({ selectedCategory, onCategoriesLoaded }: ProductCardProp) 
       .map((product: Product) => product.category)
       .filter(
         (category: string | undefined): category is string =>
-          category !== undefined && category !== null && category.trim() !== "",
+          category !== undefined && category !== null && category.trim() !== ""
       )
       .filter(
         (category: string, index: number, array: string[]) =>
-          array.indexOf(category) === index,
+          array.indexOf(category) === index
       );
 
     return categories;
   }, [data?.products]);
 
-  // Notify parent about available categories
   React.useEffect(() => {
     if (availableCategories.length > 0 && onCategoriesLoaded) {
       onCategoriesLoaded(availableCategories);
     }
   }, [availableCategories, onCategoriesLoaded]);
 
-  //filter product by selected category
   const filteredProducts = React.useMemo(() => {
     if (!data?.products) return [];
 
     if (selectedCategory.toLowerCase() === "all") return data.products;
 
     return data.products.filter(
-      (product: Product) => product.category?.toLowerCase() === selectedCategory.toLowerCase(),
+      (product: Product) =>
+        product.category?.toLowerCase() === selectedCategory.toLowerCase()
     );
   }, [data?.products, selectedCategory]);
 
@@ -125,7 +127,10 @@ const ProductCard = ({ selectedCategory, onCategoriesLoaded }: ProductCardProp) 
   }
 
   return (
-    <section id="products" className="width-full relative min-h-screen overflow-hidden bg-gradient-to-br from-slate-900 via-green-dark to-slate-800">
+    <section
+      id="products"
+      className="width-full relative min-h-screen overflow-hidden bg-gradient-to-br from-slate-900 via-green-dark to-slate-800"
+    >
       {/* Left light reflection */}
       <div className="absolute top-0 left-0 w-1/2 h-full bg-gradient-to-r from-green-success/30 via-green-light/15 to-transparent blur-3xl transform -skew-y-12 -translate-x-1/4"></div>
 
@@ -262,18 +267,25 @@ const ProductCard = ({ selectedCategory, onCategoriesLoaded }: ProductCardProp) 
                         }`}
                       >
                         {product.prices && product.prices.length > 0
-                          ? `${product.prices[0].symbol || product.prices[0].code}${product.prices[0].amount.toFixed(2)}`
+                          ? `${
+                              product.prices[0].symbol || product.prices[0].code
+                            }${product.prices[0].amount.toFixed(2)}`
                           : "Price not available"}
                       </span>
                     </div>
                     <button
+                      onClick={() => {
+                        if (product.inStock) {
+                          window.location.href = `/product/${product.id}`;
+                        }
+                      }}
                       className={`w-full py-3 px-4 rounded-md transition-colors font-medium ${
                         product.inStock
                           ? "bg-green-light text-white hover:bg-green-dark active:bg-green-dark/90 cursor-pointer"
                           : "bg-green-sage/20 text-green-sage/70 hover:bg-green-sage/30 cursor-not-allowed"
                       }`}
                     >
-                      {product.inStock ? "Add to Cart" : "Out of Stock"}
+                      {product.inStock ? "View Details" : "Out of Stock"}
                     </button>
                   </div>
                 </CardContent>

@@ -2,6 +2,8 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import { ApolloProvider } from "@apollo/client";
 import client from "@/lib/apolloClient";
+import Header from "@/components/Header";
+import { CategoryProvider, useCategoryContext } from "@/contexts/CategoryContext";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -14,6 +16,27 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+function LayoutContent({ children }: { children: React.ReactNode }) {
+  const {
+    selectedCategory,
+    setSelectedCategory,
+    availableCategories,
+  } = useCategoryContext();
+
+  return (
+    <>
+      <Header
+        selectedCategory={selectedCategory}
+        onCategoryChange={setSelectedCategory}
+        availableCategories={availableCategories}
+      />
+      <div className="min-h-screen">
+        {children}
+      </div>
+    </>
+  );
+}
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -24,7 +47,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ApolloProvider client={client}>{children}</ApolloProvider>
+        <ApolloProvider client={client}>
+          <CategoryProvider>
+            <LayoutContent>
+              {children}
+            </LayoutContent>
+          </CategoryProvider>
+        </ApolloProvider>
       </body>
     </html>
   );
