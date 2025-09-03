@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useCart } from "@/contexts/CartContext";
 import {
   ArrowLeft,
   ShoppingCart,
@@ -60,6 +61,7 @@ const GET_ALL_PRODUCTS = gql`
 const ProductDetailsPage = () => {
   const router = useRouter();
   const params = useParams();
+  const {addItem} = useCart()
 
   const productId = params?.id as string;
   const [quantity, setQuantity] = useState(1);
@@ -78,6 +80,12 @@ const ProductDetailsPage = () => {
 
     setLoading(true);
     try {
+      addItem({
+        id: product.id,
+        name: product.name,
+        price: product.prices[0].amount,
+        image: product.gallery[0],
+      }, quantity);
       console.log(`Added ${quantity} of product ${product.id} to cart`);
 
       alert(`Added ${quantity} ${product.name}(s) to cart!`);
