@@ -3,7 +3,11 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { ApolloProvider } from "@apollo/client";
 import client from "@/lib/apolloClient";
 import Header from "@/components/Header";
-import { CategoryProvider, useCategoryContext } from "@/contexts/CategoryContext";
+import {
+  CategoryProvider,
+  useCategoryContext,
+} from "@/contexts/CategoryContext";
+import { CartProvider } from "@/contexts/CartContext";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -17,11 +21,8 @@ const geistMono = Geist_Mono({
 });
 
 function LayoutContent({ children }: { children: React.ReactNode }) {
-  const {
-    selectedCategory,
-    setSelectedCategory,
-    availableCategories,
-  } = useCategoryContext();
+  const { selectedCategory, setSelectedCategory, availableCategories } =
+    useCategoryContext();
 
   return (
     <>
@@ -30,9 +31,7 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
         onCategoryChange={setSelectedCategory}
         availableCategories={availableCategories}
       />
-      <div className="min-h-screen">
-        {children}
-      </div>
+      <div className="min-h-screen">{children}</div>
     </>
   );
 }
@@ -48,11 +47,11 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ApolloProvider client={client}>
-          <CategoryProvider>
-            <LayoutContent>
-              {children}
-            </LayoutContent>
-          </CategoryProvider>
+          <CartProvider>
+            <CategoryProvider>
+              <LayoutContent>{children}</LayoutContent>
+            </CategoryProvider>
+          </CartProvider>
         </ApolloProvider>
       </body>
     </html>

@@ -1,8 +1,7 @@
-import { ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
-
+import CartDropdown from "./CartDropdown";
 interface HeaderProps {
   selectedCategory: string;
   onCategoryChange: (category: string) => void;
@@ -12,7 +11,6 @@ interface HeaderProps {
 const Header = ({ selectedCategory, onCategoryChange, availableCategories = [] }: HeaderProps) => {
   const router = useRouter();
   const pathname = usePathname();
-
   const capitalizeFirst = (str: string) => {
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
   };
@@ -92,7 +90,7 @@ const Header = ({ selectedCategory, onCategoryChange, availableCategories = [] }
 
         {/* Cart */}
         <div className="flex items-center">
-          <ShoppingCart className="w-5 h-5 text-green-sage hover:text-green-success transition-colors cursor-pointer" />
+          <CartDropdown />
         </div>
       </div>
     </header>
