@@ -17,6 +17,7 @@ import {
   Minus,
   Plus,
 } from "lucide-react";
+import { toast } from "sonner";
 
 interface Price {
   amount: number;
@@ -86,12 +87,29 @@ const ProductDetailsPage = () => {
         price: product.prices[0].amount,
         image: product.gallery[0],
       }, quantity);
-      console.log(`Added ${quantity} of product ${product.id} to cart`);
 
-      alert(`Added ${quantity} ${product.name}(s) to cart!`);
+      toast.success(`Added ${quantity} ${product.name}${quantity > 1 ? 's' : ''} to cart!`, {
+        description: `$${product.prices[0].amount.toFixed(2)} each • Total: $${(product.prices[0].amount * quantity).toFixed(2)}`,
+        duration: 4000,
+        action: {
+          label: "View Cart",
+          onClick: () => {
+            // This will trigger the cart dropdown
+            const cartButton = document.querySelector('[data-cart-trigger]') as HTMLElement;
+            if (cartButton) cartButton.click();
+          },
+        },
+      });
     } catch (error) {
       console.error("Failed to add to cart:", error);
-      alert("Failed to add to cart. Please try again.");
+      toast.error("Failed to add to cart", {
+        description: "Something went wrong. Please try again.",
+        duration: 4000,
+        action: {
+          label: "Retry",
+          onClick: () => handleAddToCart(),
+        },
+      });
     } finally {
       setLoading(false);
     }

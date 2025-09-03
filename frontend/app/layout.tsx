@@ -8,7 +8,9 @@ import {
   useCategoryContext,
 } from "@/contexts/CategoryContext";
 import { CartProvider } from "@/contexts/CartContext";
+import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
+import "../styles/toast.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -50,6 +52,7 @@ export default function RootLayout({
           <CartProvider>
             <CategoryProvider>
               <LayoutContent>{children}</LayoutContent>
+              <Toaster />
             </CategoryProvider>
           </CartProvider>
         </ApolloProvider>

@@ -5,19 +5,25 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import Image from 'next/image';
 import Link from 'next/link';
+import { toast } from "sonner";
 
 const CartDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { items, totalItems, totalPrice, updateQuantity, removeItem, clearCart } = useCart();
 
   const handleQuantityChange = (id: string | number, newQuantity: number) => {
-    console.log('handleQuantityChange called:', { id, newQuantity });
     if (newQuantity <= 0) {
-      console.log('Removing item:', id);
       removeItem(id);
+      toast.error('Item removed from cart', {
+        description: 'The item has been removed from your shopping cart',
+        duration: 2000,
+      });
     } else {
-      console.log('Updating quantity:', { id, newQuantity });
       updateQuantity(id, newQuantity);
+      toast.success('Quantity updated', {
+        description: `Updated to ${newQuantity} item${newQuantity > 1 ? 's' : ''}`,
+        duration: 2000,
+      });
     }
   };
 
@@ -26,6 +32,7 @@ const CartDropdown = () => {
       {/* Cart Trigger Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
+        data-cart-trigger
         className="flex items-center space-x-2 p-2 rounded-lg hover:bg-green-light/20 transition-colors relative"
       >
         <ShoppingCart className="w-5 h-5 text-green-sage hover:text-green-success transition-colors" />
@@ -134,7 +141,23 @@ const CartDropdown = () => {
 
                         {/* Remove Button */}
                         <button
-                          onClick={() => removeItem(item.id)}
+                          onClick={() => {
+                            const itemName = item.name;
+                            removeItem(item.id);
+                            toast.error(`${itemName} removed`, {
+                              description: 'Item has been removed from your cart',
+                              duration: 3000,
+                              action: {
+                                label: "Undo",
+                                onClick: () => {
+                                  // Re-add the item (you might want to implement an undo feature)
+                                  toast.info('Undo feature coming soon!', {
+                                    duration: 1500,
+                                  });
+                                },
+                              },
+                            });
+                          }}
                           className="text-red-500 hover:text-red-700 transition-colors p-1"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -161,14 +184,28 @@ const CartDropdown = () => {
               {/* Action Buttons */}
               <div className="flex space-x-2">
                 <Button
-                  onClick={clearCart}
+                  onClick={() => {
+                    const itemCount = items.length;
+                    const total = totalPrice.toFixed(2);
+                    clearCart();
+                    toast.success('Cart cleared successfully', {
+                      description: `Removed ${itemCount} item${itemCount > 1 ? 's' : ''} worth $${total}`,
+                      duration: 3000,
+                    });
+                  }}
                   variant="outline"
                   className="flex-1 border-red-200 text-red-600 hover:bg-red-50"
                 >
                   Clear Cart
                 </Button>
                 <Button
-                  onClick={() => setIsOpen(false)}
+                  onClick={() => {
+                    setIsOpen(false);
+                    toast.info('Checkout feature coming soon!', {
+                      description: `${totalItems} item${totalItems > 1 ? 's' : ''} worth $${totalPrice.toFixed(2)} ready for checkout`,
+                      duration: 3000,
+                    });
+                  }}
                   className="flex-1 bg-green-light text-white hover:bg-green-dark"
                 >
                   Checkout

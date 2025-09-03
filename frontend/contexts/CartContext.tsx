@@ -50,20 +50,13 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     }
 
     const updateQuantity = (id: string | number, quantity: number) => {
-        console.log('CartContext updateQuantity called:', { id, quantity });
         if (quantity <= 0) {
-            console.log('CartContext removing item:', id);
             removeItem(id)
             return
         }
-        console.log('CartContext updating items...');
-        setItems(prev => {
-            const updated = prev.map(item =>
-                item.id === id ? { ...item, quantity } : item
-            );
-            console.log('CartContext updated items:', updated);
-            return updated;
-        });
+        setItems(prev => prev.map(item =>
+            item.id === id ? { ...item, quantity } : item
+        ));
     }
 
     const clearCart = () => {
