@@ -1,9 +1,9 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { useState, useEffect, useCallback } from "react"
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { ChevronLeft, ChevronRight } from "lucide-react"
+import { ChevronLeft, ChevronRight, Play } from "lucide-react"
 
 interface Slide {
   id: number
@@ -17,24 +17,24 @@ interface Slide {
 const slides: Slide[] = [
   {
     id: 1,
-    title: "Fashion Forward",
+    title: "PHANTOM V",
     description:
-      "Discover the latest trends in fashion with our curated collection of premium clothing and accessories.",
+      "With ultra silent sound blaz, you can hear your favorite audio even in super noisy crowd.",
     offer: "40% OFF",
     images: [
-      "https://images.unsplash.com/photo-1740711152088-88a009e877bb?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?q=80&w=736&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "https://images.unsplash.com/photo-1740711152088-88a009e877bb?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?q=80&w=900&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     ],
-    category: "clothes",
+    category: "tech",
   },
   {
     id: 2,
-    title: "Tech Revolution",
-    description: "Experience cutting-edge technology with our premium selection of gadgets and innovative devices.",
+    title: "AURORA X",
+    description: "High-fidelity audio with immersive processing and real‑time noise reduction.",
     offer: "35% OFF",
     images: [
-      "https://images.unsplash.com/photo-1630794180018-433d915c34ac?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "https://images.unsplash.com/photo-1630794180018-433d915c34ac?q=80&w=1400&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     ],
     category: "tech",
   },
@@ -43,138 +43,187 @@ const slides: Slide[] = [
 export default function HeroSection() {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isAutoPlaying, setIsAutoPlaying] = useState(true)
+  const shouldReduceMotion = useReducedMotion()
 
-  // Auto-slide functionality
-  useEffect(() => {
-    if (!isAutoPlaying) return
+  const totalSlides = slides.length
 
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length)
-    }, 5000)
-
-    return () => clearInterval(interval)
-  }, [isAutoPlaying])
-
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % slides.length)
+  const nextSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev + 1) % totalSlides)
     setIsAutoPlaying(false)
-    setTimeout(() => setIsAutoPlaying(true), 10000) // Resume auto-play after 10s
-  }
+    const resume = setTimeout(() => setIsAutoPlaying(true), 10000)
+    return () => clearTimeout(resume)
+  }, [totalSlides])
 
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)
+  const prevSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides)
     setIsAutoPlaying(false)
-    setTimeout(() => setIsAutoPlaying(true), 10000) // Resume auto-play after 10s
-  }
+    const resume = setTimeout(() => setIsAutoPlaying(true), 10000)
+    return () => clearTimeout(resume)
+  }, [totalSlides])
 
-  const goToSlide = (index: number) => {
+  const goToSlide = useCallback((index: number) => {
     setCurrentSlide(index)
     setIsAutoPlaying(false)
-    setTimeout(() => setIsAutoPlaying(true), 10000) // Resume auto-play after 10s
-  }
+    const resume = setTimeout(() => setIsAutoPlaying(true), 10000)
+    return () => clearTimeout(resume)
+  }, [])
+
+  useEffect(() => {
+    if (!isAutoPlaying || shouldReduceMotion) return
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % totalSlides)
+    }, 6500)
+    return () => clearInterval(interval)
+  }, [isAutoPlaying, shouldReduceMotion, totalSlides])
+
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "ArrowRight") nextSlide()
+      if (e.key === "ArrowLeft") prevSlide()
+      if (e.key === " ") {
+        e.preventDefault()
+        setIsAutoPlaying((p) => !p)
+      }
+    }
+    window.addEventListener("keydown", onKeyDown)
+    return () => window.removeEventListener("keydown", onKeyDown)
+  }, [nextSlide, prevSlide])
 
   const currentSlideData = slides[currentSlide]
 
+  const baseTransition = {
+    duration: shouldReduceMotion ? 0 : 0.7,
+    ease: "easeInOut" as const,
+  }
+
   return (
-    <section className="relative h-screen w-full overflow-hidden">
+    <section
+      className="relative w-full overflow-hidden min-h-[78vh] lg:min-h-[86vh] bg-[#0b0d10] text-white"
+      onMouseEnter={() => setIsAutoPlaying(false)}
+      onMouseLeave={() => setIsAutoPlaying(true)}
+      aria-roledescription="carousel"
+      aria-label="Featured products"
+    >
+      {/* Dark gradient background with glow accent */}
+      <div className="absolute inset-0 bg-[radial-gradient(1000px_600px_at_20%_30%,rgba(129,140,248,0.25),transparent_60%),radial-gradient(800px_500px_at_70%_20%,rgba(99,102,241,0.18),transparent_55%)]" aria-hidden />
+      <div className="absolute inset-0 bg-gradient-to-b from-white/[0.02] to-transparent" aria-hidden />
+
       <AnimatePresence mode="wait">
         <motion.div
           key={currentSlide}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.8, ease: "easeInOut" }}
+          transition={baseTransition}
           className="absolute inset-0"
         >
-          {/* Background gradient based on category */}
-          <div
-            className={`absolute inset-0 ${
-              currentSlideData.category === "clothes"
-                ? "bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50"
-                : "bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50"
-            }`}
-          />
-
-          <div className="relative h-full flex flex-col lg:flex-row">
-            {/* Content Section */}
-            <div className="flex-1 flex items-center justify-center p-6 lg:p-12 z-10">
-              <div className="max-w-lg text-center lg:text-left">
+          {/* Content container */}
+          <div className="relative h-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 lg:py-14 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10">
+            {/* Left: copy + CTA */}
+            <div className="lg:col-span-5 flex items-center">
+              <div className="w-full max-w-xl">
                 <motion.div
-                  initial={{ opacity: 0, y: 30 }}
+                  initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 18 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.2 }}
-                  className={`inline-block px-4 py-2 rounded-full text-sm font-semibold mb-6 ${
-                    currentSlideData.category === "clothes" ? "bg-rose-100 text-rose-800" : "bg-blue-100 text-blue-800"
-                  }`}
+                  transition={{ ...baseTransition, delay: shouldReduceMotion ? 0 : 0.1 }}
+                  className="text-xs tracking-[0.2em] text-white/60 mb-3"
                 >
-                  {currentSlideData.category === "clothes" ? "Fashion" : "Technology"}
+                  SERIES
                 </motion.div>
 
                 <motion.h1
-                  initial={{ opacity: 0, y: 30 }}
+                  initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.3 }}
-                  className="text-4xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight"
+                  transition={{ ...baseTransition, delay: shouldReduceMotion ? 0 : 0.2 }}
+                  className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight"
                 >
                   {currentSlideData.title}
                 </motion.h1>
 
                 <motion.p
-                  initial={{ opacity: 0, y: 30 }}
+                  initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.4 }}
-                  className="text-lg text-gray-600 mb-8 leading-relaxed"
+                  transition={{ ...baseTransition, delay: shouldReduceMotion ? 0 : 0.28 }}
+                  className="mt-4 text-sm sm:text-base text-white/70 max-w-md"
                 >
                   {currentSlideData.description}
                 </motion.p>
 
                 <motion.div
-                  initial={{ opacity: 0, y: 30 }}
+                  initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.5 }}
-                  className="flex flex-col sm:flex-row items-center gap-4"
+                  transition={{ ...baseTransition, delay: shouldReduceMotion ? 0 : 0.35 }}
+                  className="mt-6 flex items-center gap-3"
                 >
-                  <div
-                    className={`text-5xl font-black ${
-                      currentSlideData.category === "clothes" ? "text-rose-600" : "text-blue-600"
-                    }`}
-                  >
-                    {currentSlideData.offer}
-                  </div>
                   <Button
                     size="lg"
-                    className={`px-8 py-3 text-lg font-semibold ${
-                      currentSlideData.category === "clothes"
-                        ? "bg-rose-600 hover:bg-rose-700"
-                        : "bg-blue-600 hover:bg-blue-700"
-                    }`}
+                    className="rounded-xl bg-indigo-500 hover:bg-indigo-600 text-white px-6 shadow-[0_10px_40px_rgba(99,102,241,0.35)] focus-visible:ring-2 focus-visible:ring-indigo-300"
+                    aria-label="Add to cart"
                   >
-                    Shop Now
+                    Add to cart
                   </Button>
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="rounded-xl border-white/15 bg-white/5 hover:bg-white/10 text-white backdrop-blur-sm"
+                    aria-label="Watch reel"
+                  >
+                    <Play className="h-4 w-4 mr-2" /> Watch reel
+                  </Button>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ ...baseTransition, delay: 0.5 }}
+                  className="mt-6 text-xs text-white/50"
+                  aria-label={`Limited time offer ${currentSlideData.offer}`}
+                >
+                  {currentSlideData.offer} · Free express shipping
                 </motion.div>
               </div>
             </div>
 
-            {/* Images Section */}
-            <div className="flex-1 relative p-6 lg:p-12">
-              <div className="h-full grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
-                {currentSlideData.images.map((image, index) => (
-                  <motion.div
+            {/* Right: product spotlight */}
+            <div className="lg:col-span-7 relative">
+              <div className="absolute -inset-6 sm:-inset-8 rounded-[28px] bg-gradient-to-tr from-indigo-500/20 via-fuchsia-500/10 to-transparent blur-3xl" aria-hidden />
+              <motion.div
+                initial={{ opacity: 0, scale: shouldReduceMotion ? 1 : 0.96, y: shouldReduceMotion ? 0 : 14 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                transition={{ ...baseTransition, delay: shouldReduceMotion ? 0 : 0.25 }}
+                className="relative rounded-[24px] bg-[linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02))] border border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_20px_80px_rgba(0,0,0,0.45)] p-3 sm:p-4 lg:p-6"
+              >
+                <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:gap-6">
+                  {currentSlideData.images.map((image, index) => (
+                    <div key={index} className="relative overflow-hidden rounded-2xl bg-black/40">
+                      <motion.img
+                        src={image}
+                        alt={`${currentSlideData.category} item ${index + 1}`}
+                        className="w-full h-full object-cover aspect-[16/11] sm:aspect-[4/3]"
+                        loading="lazy"
+                        decoding="async"
+                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 40vw, 36vw"
+                        whileHover={shouldReduceMotion ? undefined : { scale: 1.03 }}
+                        transition={shouldReduceMotion ? undefined : { duration: 0.3 }}
+                      />
+                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" aria-hidden />
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+
+              {/* Vertical pagination */}
+              <div className="absolute right-0 top-1/2 -translate-y-1/2 flex flex-col items-center gap-2 pr-1 sm:pr-2">
+                {slides.map((_, index) => (
+                  <button
                     key={index}
-                    initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.6 + index * 0.1 }}
-                    className="relative group overflow-hidden rounded-2xl shadow-2xl"
-                  >
-                    <motion.img
-                      src={image}
-                      alt={`${currentSlideData.category} ${index + 1}`}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                      whileHover={{ scale: 1.05 }}
-                      transition={{ duration: 0.3 }}
-                    />
-                    <div className="absolute inset-0 bg-black/10 group-hover:bg-black/5 transition-colors duration-300" />
-                  </motion.div>
+                    onClick={() => goToSlide(index)}
+                    className={`h-2.5 w-1.5 rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300 ${
+                      index === currentSlide ? "bg-indigo-500 h-7" : "bg-white/30 hover:bg-white/60"
+                    }`}
+                    aria-label={`Go to slide ${index + 1}`}
+                    aria-current={index === currentSlide ? "true" : undefined}
+                  />
                 ))}
               </div>
             </div>
@@ -182,48 +231,32 @@ export default function HeroSection() {
         </motion.div>
       </AnimatePresence>
 
-      {/* Navigation Controls */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex items-center gap-4 z-20">
-        {/* Pagination Dots */}
-        <div className="flex gap-2">
-          {slides.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => goToSlide(index)}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                index === currentSlide
-                  ? currentSlideData.category === "clothes"
-                    ? "bg-rose-600 w-8"
-                    : "bg-blue-600 w-8"
-                  : "bg-white/50 hover:bg-white/70"
-              }`}
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* Previous/Next Buttons */}
+      {/* Prev/Next */}
       <Button
         variant="outline"
         size="icon"
         onClick={prevSlide}
-        className="absolute left-6 top-1/2 transform -translate-y-1/2 z-20 bg-white/80 hover:bg-white border-white/20 backdrop-blur-sm"
+        className="absolute left-4 sm:left-6 top-1/2 -translate-y-1/2 z-20 border-white/15 bg-white/5 hover:bg-white/10 text-white backdrop-blur-sm"
+        aria-label="Previous slide"
       >
         <ChevronLeft className="h-5 w-5" />
       </Button>
-
       <Button
         variant="outline"
         size="icon"
         onClick={nextSlide}
-        className="absolute right-6 top-1/2 transform -translate-y-1/2 z-20 bg-white/80 hover:bg-white border-white/20 backdrop-blur-sm"
+        className="absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 z-20 border-white/15 bg-white/5 hover:bg-white/10 text-white backdrop-blur-sm"
+        aria-label="Next slide"
       >
         <ChevronRight className="h-5 w-5" />
       </Button>
 
       {/* Auto-play indicator */}
-      <div className="absolute top-6 right-6 z-20">
-        <div className={`w-2 h-2 rounded-full ${isAutoPlaying ? "bg-green-500" : "bg-gray-400"} animate-pulse`} />
+      <div className="absolute top-4 sm:top-6 right-4 sm:right-6 z-20">
+        <div
+          className={`w-2 h-2 rounded-full ${isAutoPlaying ? "bg-emerald-400" : "bg-zinc-500"} ${shouldReduceMotion ? "" : "animate-pulse"}`}
+          aria-label={isAutoPlaying ? "Autoplay on" : "Autoplay off"}
+        />
       </div>
     </section>
   )
