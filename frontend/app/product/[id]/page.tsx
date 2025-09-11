@@ -94,7 +94,6 @@ const ProductDetailsPage = () => {
         action: {
           label: "View Cart",
           onClick: () => {
-            // This will trigger the cart dropdown
             const cartButton = document.querySelector('[data-cart-trigger]') as HTMLElement;
             if (cartButton) cartButton.click();
           },
