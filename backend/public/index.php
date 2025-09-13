@@ -48,6 +48,18 @@ try {
                 "service" => "GraphQL API",
             ]);
         });
+        
+        // Add health_check.php route for Railway
+        $r->get("/health_check.php", function () {
+            header("Content-Type: application/json");
+            header("Access-Control-Allow-Origin: *");
+            return json_encode([
+                "status" => "healthy",
+                "timestamp" => date("Y-m-d H:i:s"),
+                "service" => "GraphQL API",
+                "note" => "Route-based health check"
+            ]);
+        });
     });
 
     $routeInfo = $dispatcher->dispatch(
@@ -64,7 +76,7 @@ try {
                 "status" => "error",
                 "code" => 404,
                 "message" => "Endpoint not found",
-                "available_endpoints" => ["/graphql", "/health"],
+                "available_endpoints" => ["/graphql", "/health", "/health_check.php"],
             ]);
             break;
 
