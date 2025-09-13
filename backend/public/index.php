@@ -1,35 +1,99 @@
 <?php
 
-require_once __DIR__ . '/../../vendor/autoload.php';
+// Error handling for production
+error_reporting(E_ALL);
+ini_set("display_errors", 0);
+ini_set("log_errors", 1);
 
-$dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
-  $r->post('/graphql', [App\Controller\GraphQL::class, 'handle']);
-  $r->addRoute('OPTIONS', '/graphql', function() {
-    // Handle CORS preflight
-    header('Access-Control-Allow-Origin: *');
-    header('Access-Control-Allow-Methods: POST, OPTIONS');
-    header('Access-Control-Allow-Headers: Content-Type');
-    return '';
-  });
-});
+try {
+    require_once __DIR__ . "/../../vendor/autoload.php";
 
+    $dispatcher = FastRoute\simpleDispatcher(function (
+        FastRoute\RouteCollector $r,
+    ) {
+        $r->post("/graphql", [App\Controller\GraphQL::class, "handle"]);
+        $r->addRoute("OPTIONS", "/graphql", function () {
+            // Handle CORS preflight
+            header("Access-Control-Allow-Origin: *");
+            header("Access-Control-Allow-Methods: POST, OPTIONS");
+            header("Access-Control-Allow-Headers: Content-Type");
+            http_response_code(200);
+            return "";
+        });
 
-$routeInfo = $dispatcher->dispatch(
-  $_SERVER['REQUEST_METHOD'],
-  $_SERVER['REQUEST_URI']
-);
+        // Add a health check endpoint
+        $r->get("/health", function () {
+            header("Content-Type: application/json");
+            header("Access-Control-Allow-Origin: *");
+            return json_encode([
+                "status" => "healthy",
+                "timestamp" => date("Y-m-d H:i:s"),
+                "service" => "GraphQL API",
+            ]);
+        });
+    });
 
-switch ($routeInfo[0]) {
-  case FastRoute\Dispatcher::NOT_FOUND:
-    // ... 404 Not Found
-    break;
-  case FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
-    $allowedMethods = $routeInfo[1];
-    // ... 405 Method Not Allowed
-    break;
-  case FastRoute\Dispatcher::FOUND:
-    $handler = $routeInfo[1];
-    $vars = $routeInfo[2];
-    echo $handler($vars);
-    break;
+    $routeInfo = $dispatcher->dispatch(
+        $_SERVER["REQUEST_METHOD"],
+        $_SERVER["REQUEST_URI"],
+    );
+
+    switch ($routeInfo[0]) {
+        case FastRoute\Dispatcher::NOT_FOUND:
+            header("Content-Type: application/json");
+            header("Access-Control-Allow-Origin: *");
+            http_response_code(404);
+            echo json_encode([
+                "status" => "error",
+                "code" => 404,
+                "message" => "Endpoint not found",
+                "available_endpoints" => ["/graphql", "/health"],
+            ]);
+            break;
+
+        case FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
+            $allowedMethods = $routeInfo[1];
+            header("Content-Type: application/json");
+            header("Access-Control-Allow-Origin: *");
+            http_response_code(405);
+            echo json_encode([
+                "status" => "error",
+                "code" => 405,
+                "message" => "Method not allowed",
+                "allowed_methods" => $allowedMethods,
+            ]);
+            break;
+
+        case FastRoute\Dispatcher::FOUND:
+            $handler = $routeInfo[1];
+            $vars = $routeInfo[2];
+
+            if (is_callable($handler)) {
+                echo $handler($vars);
+            } else {
+                echo call_user_func($handler, $vars);
+            }
+            break;
+    }
+} catch (Throwable $e) {
+    // Log the error
+    error_log(
+        "Backend Error: " .
+            $e->getMessage() .
+            " in " .
+            $e->getFile() .
+            " on line " .
+            $e->getLine(),
+    );
+
+    // Return error response
+    header("Content-Type: application/json");
+    header("Access-Control-Allow-Origin: *");
+    http_response_code(500);
+    echo json_encode([
+        "status" => "error",
+        "code" => 500,
+        "message" => "Internal server error",
+        "timestamp" => date("Y-m-d H:i:s"),
+    ]);
 }

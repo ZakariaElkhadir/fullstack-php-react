@@ -24,20 +24,23 @@ class Database
 
     private function loadEnvironmentVariables(): void
     {
-        $envFile = __DIR__ . '/../../.env';
+        $envFile = __DIR__ . "/../../.env";
         if (file_exists($envFile)) {
-            $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+            $lines = file(
+                $envFile,
+                FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES,
+            );
             if ($lines === false) {
                 throw new Exception("Unable to read .env file");
             }
 
             foreach ($lines as $line) {
                 $line = trim($line);
-                if (empty($line) || strpos($line, '#') === 0) {
+                if (empty($line) || strpos($line, "#") === 0) {
                     continue;
                 }
 
-                $parts = explode('=', $line, 2);
+                $parts = explode("=", $line, 2);
                 if (count($parts) !== 2) {
                     continue;
                 }
@@ -54,26 +57,58 @@ class Database
             }
         }
 
-        $this->host = $_ENV['DB_HOST'] ?? 'localhost';
-        $this->username = $_ENV['DB_USER'] ?? '';
-        $this->password = $_ENV['DB_PASS'] ?? '';
-        $this->database = $_ENV['DB_NAME'] ?? '';
-        $this->port = (int)($_ENV['DB_PORT'] ?? 3306);
-        $this->charset = $_ENV['DB_CHARSET'] ?? 'utf8mb4';
+        // Check for Railway DATABASE_URL first
+        if (isset($_ENV["DATABASE_URL"])) {
+            $this->parseDatabaseUrl($_ENV["DATABASE_URL"]);
+        } else {
+            // Fall back to individual environment variables
+            $this->host =
+                $_ENV["DB_HOST"] ?? (getenv("DB_HOST") ?? "localhost");
+            $this->username = $_ENV["DB_USER"] ?? (getenv("DB_USER") ?? "");
+            $this->password = $_ENV["DB_PASS"] ?? (getenv("DB_PASS") ?? "");
+            $this->database = $_ENV["DB_NAME"] ?? (getenv("DB_NAME") ?? "");
+            $this->port =
+                (int) ($_ENV["DB_PORT"] ?? (getenv("DB_PORT") ?? 3306));
+            $this->charset =
+                $_ENV["DB_CHARSET"] ?? (getenv("DB_CHARSET") ?? "utf8mb4");
+        }
+    }
+
+    private function parseDatabaseUrl(string $databaseUrl): void
+    {
+        $parsedUrl = parse_url($databaseUrl);
+
+        if ($parsedUrl === false) {
+            throw new Exception("Invalid DATABASE_URL format");
+        }
+
+        $this->host = $parsedUrl["host"] ?? "localhost";
+        $this->username = $parsedUrl["user"] ?? "";
+        $this->password = $parsedUrl["pass"] ?? "";
+        $this->database = ltrim($parsedUrl["path"] ?? "", "/");
+        $this->port = (int) ($parsedUrl["port"] ?? 3306);
+        $this->charset = "utf8mb4";
     }
 
     private function connect(): void
     {
         $dsn = "mysql:host={$this->host};dbname={$this->database};port={$this->port};charset={$this->charset}";
         try {
-            $this->connection = new PDO($dsn, $this->username, $this->password, [
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-            ]);
+            $this->connection = new PDO(
+                $dsn,
+                $this->username,
+                $this->password,
+                [
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                ],
+            );
             // echo "Database connected successfully!\n";
         } catch (PDOException $e) {
             $this->connection = null;
-            throw new Exception("Database connection error: " . $e->getMessage());
+            throw new Exception(
+                "Database connection error: " . $e->getMessage(),
+            );
         }
     }
 
@@ -113,11 +148,4 @@ class Database
     }
 }
 
-try {
-    $db = new Database();
-    if ($db->isConnected()) {
-        echo "Database is connected and ready to use.\n";
-    }
-} catch (Exception $e) {
-    echo "Error: " . $e->getMessage() . "\n";
-}
+// Removed auto-connection code to prevent issues in production
