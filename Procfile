@@ -1,1 +1,1 @@
-web: cd backend && php -S 0.0.0.0:$PORT -t public
+web: cd backend && ./start_server.sh

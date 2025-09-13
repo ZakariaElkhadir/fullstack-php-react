@@ -6,6 +6,3 @@ cmds = ["cd backend && composer install --no-dev --optimize-autoloader"]
 
 [phases.build]
 cmds = ["echo 'Build phase completed'"]
-
-[start]
-cmd = "cd backend && php -S 0.0.0.0:$PORT -t public"

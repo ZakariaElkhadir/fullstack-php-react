@@ -4,7 +4,6 @@
     "builder": "NIXPACKS"
   },
   "deploy": {
-    "startCommand": "cd backend && php -S 0.0.0.0:$PORT -t public",
     "healthcheckPath": "/health_check.php",
     "healthcheckTimeout": 100,
     "restartPolicyType": "ON_FAILURE",
