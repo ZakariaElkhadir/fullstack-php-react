@@ -57,11 +57,9 @@ class Database
             }
         }
 
-        // Check for Railway DATABASE_URL first
         if (isset($_ENV["DATABASE_URL"])) {
             $this->parseDatabaseUrl($_ENV["DATABASE_URL"]);
         } else {
-            // Fall back to individual environment variables
             $this->host =
                 $_ENV["DB_HOST"] ?? (getenv("DB_HOST") ?? "localhost");
             $this->username = $_ENV["DB_USER"] ?? (getenv("DB_USER") ?? "");
@@ -103,7 +101,6 @@ class Database
                     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                 ],
             );
-            // echo "Database connected successfully!\n";
         } catch (PDOException $e) {
             $this->connection = null;
             throw new Exception(
@@ -147,5 +144,3 @@ class Database
         $this->close();
     }
 }
-
-// Removed auto-connection code to prevent issues in production

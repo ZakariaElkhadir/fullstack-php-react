@@ -4,6 +4,9 @@ error_reporting(E_ALL);
 ini_set("display_errors", 0);
 ini_set("log_errors", 1);
 
+$port = $_ENV["PORT"] ?? (getenv("PORT") ?? 8000);
+$_SERVER["SERVER_PORT"] = $port;
+
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
@@ -41,6 +44,7 @@ try {
         "status" => "error",
         "message" => "Application failed to start",
         "error" => $e->getMessage(),
+        "port" => $port,
         "timestamp" => date("Y-m-d H:i:s"),
     ]);
     exit();
