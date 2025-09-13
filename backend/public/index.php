@@ -25,6 +25,10 @@ try {
         throw new Exception("Autoloader not found. Checked paths: " . implode(", ", $autoloadPaths));
     }
 
+    // Load environment variables
+    $dotenv = \Dotenv\Dotenv::createImmutable(__DIR__ . "/..");
+    $dotenv->safeLoad(); // Use safeLoad to not fail if .env doesn't exist in production
+
     $dispatcher = FastRoute\simpleDispatcher(function (
         FastRoute\RouteCollector $r,
     ) {
