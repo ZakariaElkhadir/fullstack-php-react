@@ -22,6 +22,14 @@ class GraphQL
             }
 
             $input = json_decode($rawInput, true);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                throw new RuntimeException("Invalid JSON input: " . json_last_error_msg());
+            }
+            
+            if (!isset($input["query"])) {
+                throw new RuntimeException("Missing 'query' field in request");
+            }
+            
             $query = $input["query"];
             $variableValues = $input["variables"] ?? null;
 
@@ -35,10 +43,21 @@ class GraphQL
             );
             $output = $result->toArray();
         } catch (Throwable $e) {
+            // Log the error for debugging
+            error_log("GraphQL Error: " . $e->getMessage() . " in " . $e->getFile() . " on line " . $e->getLine());
+            
             $output = [
-                "error" => [
-                    "message" => $e->getMessage(),
+                "errors" => [
+                    [
+                        "message" => $e->getMessage(),
+                        "extensions" => [
+                            "code" => "INTERNAL_ERROR",
+                            "file" => $e->getFile(),
+                            "line" => $e->getLine()
+                        ]
+                    ]
                 ],
+                "data" => null
             ];
         }
 
@@ -46,6 +65,6 @@ class GraphQL
         header("Access-Control-Allow-Origin: *");
         header("Access-Control-Allow-Methods: POST, OPTIONS");
         header("Access-Control-Allow-Headers: Content-Type");
-        return json_encode($output);
+        return json_encode($output, JSON_PRETTY_PRINT);
     }
 }

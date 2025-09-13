@@ -60,6 +60,36 @@ try {
                 "note" => "Route-based health check"
             ]);
         });
+        
+        // Add database test endpoint
+        $r->get("/db_test", function () {
+            header("Content-Type: application/json");
+            header("Access-Control-Allow-Origin: *");
+            
+            try {
+                $db = new App\Config\Database();
+                $connection = $db->getConnection();
+                
+                // Test a simple query
+                $stmt = $connection->prepare("SELECT COUNT(*) as count FROM products");
+                $stmt->execute();
+                $result = $stmt->fetch();
+                
+                return json_encode([
+                    "status" => "success",
+                    "database" => "connected",
+                    "product_count" => $result['count'],
+                    "timestamp" => date("Y-m-d H:i:s")
+                ]);
+            } catch (Exception $e) {
+                return json_encode([
+                    "status" => "error",
+                    "database" => "connection_failed",
+                    "error" => $e->getMessage(),
+                    "timestamp" => date("Y-m-d H:i:s")
+                ]);
+            }
+        });
     });
 
     $routeInfo = $dispatcher->dispatch(
@@ -76,7 +106,7 @@ try {
                 "status" => "error",
                 "code" => 404,
                 "message" => "Endpoint not found",
-                "available_endpoints" => ["/graphql", "/health", "/health_check.php"],
+                "available_endpoints" => ["/graphql", "/health", "/health_check.php", "/db_test"],
             ]);
             break;
 
