@@ -24,37 +24,11 @@ class Database
 
     private function loadEnvironmentVariables(): void
     {
-        $envFile = __DIR__ . "/../../.env";
-        if (file_exists($envFile)) {
-            $lines = file(
-                $envFile,
-                FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES,
-            );
-            if ($lines === false) {
-                throw new Exception("Unable to read .env file");
-            }
+        // Try to find .env file by traversing up the directory tree
+        $envFile = $this->findEnvFile();
 
-            foreach ($lines as $line) {
-                $line = trim($line);
-                if (empty($line) || strpos($line, "#") === 0) {
-                    continue;
-                }
-
-                $parts = explode("=", $line, 2);
-                if (count($parts) !== 2) {
-                    continue;
-                }
-
-                [$name, $value] = $parts;
-                $name = trim($name);
-                $value = trim($value);
-
-                if (preg_match('/^["\'].*["\']$/', $value)) {
-                    $value = substr($value, 1, -1);
-                }
-
-                $_ENV[$name] = $value;
-            }
+        if ($envFile && file_exists($envFile)) {
+            $this->parseEnvFile($envFile);
         }
 
         if (isset($_ENV["DATABASE_URL"])) {
@@ -69,6 +43,62 @@ class Database
                 (int) ($_ENV["DB_PORT"] ?? (getenv("DB_PORT") ?? 3306));
             $this->charset =
                 $_ENV["DB_CHARSET"] ?? (getenv("DB_CHARSET") ?? "utf8mb4");
+        }
+    }
+
+    private function findEnvFile(): ?string
+    {
+        $currentDir = __DIR__;
+        $maxLevels = 5; 
+        $level = 0;
+
+        while ($level < $maxLevels) {
+            $envPath = $currentDir . DIRECTORY_SEPARATOR . ".env";
+
+            if (file_exists($envPath)) {
+                return $envPath;
+            }
+
+            $parentDir = dirname($currentDir);
+
+            if ($parentDir === $currentDir) {
+                break;
+            }
+
+            $currentDir = $parentDir;
+            $level++;
+        }
+
+        return null;
+    }
+
+    private function parseEnvFile(string $envFile): void
+    {
+        $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        if ($lines === false) {
+            throw new Exception("Unable to read .env file");
+        }
+
+        foreach ($lines as $line) {
+            $line = trim($line);
+            if (empty($line) || strpos($line, "#") === 0) {
+                continue;
+            }
+
+            $parts = explode("=", $line, 2);
+            if (count($parts) !== 2) {
+                continue;
+            }
+
+            [$name, $value] = $parts;
+            $name = trim($name);
+            $value = trim($value);
+
+            if (preg_match('/^["\'].*["\']$/', $value)) {
+                $value = substr($value, 1, -1);
+            }
+
+            $_ENV[$name] = $value;
         }
     }
 
