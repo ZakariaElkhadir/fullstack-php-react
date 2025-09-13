@@ -1,19 +1,15 @@
 #!/bin/bash
 
-echo "Starting PHP server..."
+echo "=== RAILWAY STARTUP SCRIPT ==="
 echo "Current directory: $(pwd)"
-echo "Backend directory contents:"
-ls -la
 
-echo "Public directory contents:"
-ls -la public/
+# Run debug script first
+echo "Running debug script..."
+php debug_startup.php
 
-echo "Vendor directory contents:"
-ls -la vendor/ 2>/dev/null || echo "Vendor directory not found"
-
-echo "Environment variables:"
-echo "PORT: $PORT"
-echo "DATABASE_URL: ${DATABASE_URL:0:20}..." # Only show first 20 chars for security
-
+echo ""
 echo "Starting PHP server on 0.0.0.0:$PORT"
-cd backend && php -S 0.0.0.0:$PORT -t public
+echo "Document root: public/"
+echo "================================"
+
+php -S 0.0.0.0:$PORT -t public

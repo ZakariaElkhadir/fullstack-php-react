@@ -1,1 +1,1 @@
-web: cd backend && ./start_server.sh
+web: cd backend && php simple_start.php
