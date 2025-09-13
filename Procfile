@@ -1,1 +1,1 @@
-web: cd backend && php simple_start.php
+web: cd backend && php -S 0.0.0.0:$PORT -t public

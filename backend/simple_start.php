@@ -1,8 +1,12 @@
 <?php
 // Simple PHP server startup script
-echo "Starting PHP server...\n";
-echo "Port: " . ($_ENV['PORT'] ?? '8000') . "\n";
+echo "=== RAILWAY PHP SERVER STARTUP ===\n";
 echo "Current directory: " . getcwd() . "\n";
+echo "PHP version: " . PHP_VERSION . "\n";
+
+// Check environment variables
+$port = $_ENV['PORT'] ?? '8000';
+echo "Port from environment: $port\n";
 
 // Check if we're in the right directory
 if (!is_dir('public')) {
@@ -23,9 +27,12 @@ if (!file_exists('vendor/autoload.php')) {
     exit(1);
 }
 
-echo "Starting server...\n";
-$port = $_ENV['PORT'] ?? '8000';
+echo "All checks passed. Starting server...\n";
+echo "Binding to: 0.0.0.0:$port\n";
+echo "Document root: public/\n";
+echo "===============================\n";
+
+// Start the server
 $command = "php -S 0.0.0.0:$port -t public";
-echo "Command: $command\n";
 passthru($command);
 ?>
