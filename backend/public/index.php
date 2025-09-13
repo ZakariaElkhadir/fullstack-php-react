@@ -6,14 +6,31 @@ ini_set("display_errors", 0);
 ini_set("log_errors", 1);
 
 try {
-    require_once __DIR__ . "/../../vendor/autoload.php";
+    $autoloadPaths = [
+        __DIR__ . "/../../vendor/autoload.php", 
+        __DIR__ . "/../vendor/autoload.php",    
+        __DIR__ . "/../../../../vendor/autoload.php", 
+    ];
+    
+    $autoloaderFound = false;
+    foreach ($autoloadPaths as $path) {
+        if (file_exists($path)) {
+            require_once $path;
+            $autoloaderFound = true;
+            break;
+        }
+    }
+    
+    if (!$autoloaderFound) {
+        throw new Exception("Autoloader not found. Checked paths: " . implode(", ", $autoloadPaths));
+    }
 
     $dispatcher = FastRoute\simpleDispatcher(function (
         FastRoute\RouteCollector $r,
     ) {
         $r->post("/graphql", [App\Controller\GraphQL::class, "handle"]);
         $r->addRoute("OPTIONS", "/graphql", function () {
-            // Handle CORS preflight
+        // Handle CORS preflight
             header("Access-Control-Allow-Origin: *");
             header("Access-Control-Allow-Methods: POST, OPTIONS");
             header("Access-Control-Allow-Headers: Content-Type");
