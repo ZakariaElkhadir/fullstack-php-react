@@ -7,11 +7,11 @@ ini_set("log_errors", 1);
 
 try {
     $autoloadPaths = [
-        __DIR__ . "/../../vendor/autoload.php", 
-        __DIR__ . "/../vendor/autoload.php",    
-        __DIR__ . "/../../../../vendor/autoload.php", 
+        __DIR__ . "/../../vendor/autoload.php",
+        __DIR__ . "/../vendor/autoload.php",
+        __DIR__ . "/../../../../vendor/autoload.php",
     ];
-    
+
     $autoloaderFound = false;
     foreach ($autoloadPaths as $path) {
         if (file_exists($path)) {
@@ -20,7 +20,7 @@ try {
             break;
         }
     }
-    
+
     if (!$autoloaderFound) {
         throw new Exception("Autoloader not found. Checked paths: " . implode(", ", $autoloadPaths));
     }
@@ -34,7 +34,7 @@ try {
     ) {
         $r->post("/graphql", [App\Controller\GraphQL::class, "handle"]);
         $r->addRoute("OPTIONS", "/graphql", function () {
-        // Handle CORS preflight
+            // Handle CORS preflight
             header("Access-Control-Allow-Origin: *");
             header("Access-Control-Allow-Methods: POST, OPTIONS");
             header("Access-Control-Allow-Headers: Content-Type");
@@ -52,7 +52,7 @@ try {
                 "service" => "GraphQL API",
             ]);
         });
-        
+
         // Add health_check.php route for Railway
         $r->get("/health_check.php", function () {
             header("Content-Type: application/json");
@@ -64,21 +64,21 @@ try {
                 "note" => "Route-based health check"
             ]);
         });
-        
+
         // Add database test endpoint
         $r->get("/db_test", function () {
             header("Content-Type: application/json");
             header("Access-Control-Allow-Origin: *");
-            
+
             try {
                 $db = new App\Config\Database();
                 $connection = $db->getConnection();
-                
+
                 // Test a simple query
                 $stmt = $connection->prepare("SELECT COUNT(*) as count FROM products");
                 $stmt->execute();
                 $result = $stmt->fetch();
-                
+
                 return json_encode([
                     "status" => "success",
                     "database" => "connected",
