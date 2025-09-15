@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, ReactNode } from 'react'
+import { toast } from 'sonner'
 
 interface CartItem {
     id: string | number
@@ -14,6 +15,7 @@ interface CartContextType {
     removeItem: (id: string | number) => void
     updateQuantity: (id: string | number, quantity: number) => void
     clearCart: () => void
+    checkout: () => void
     totalItems: number
     totalPrice: number
 }
@@ -43,6 +45,12 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
             }
             return [...prev, { ...newItem, quantity }]
         })
+        
+        // Show add to cart toast
+        toast.success(`${newItem.name} added to cart! 🛒`, {
+            description: `${quantity} item${quantity > 1 ? 's' : ''} • $${(newItem.price * quantity).toFixed(2)}`,
+            duration: 3000,
+        })
     }
 
     const removeItem = (id: string | number) => {
@@ -63,6 +71,38 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         setItems([])
     }
 
+    const checkout = () => {
+        if (items.length === 0) {
+            toast.error("Cart is empty", {
+                description: "Add some items to your cart before checking out.",
+                duration: 3000,
+            })
+            return
+        }
+
+        // Simulate checkout process
+        const orderTotal = totalPrice
+        const orderItems = items.length
+        
+        // Clear the cart
+        setItems([])
+        
+        // Show success message
+        toast.success("Order placed successfully! 🎉", {
+            description: `${orderItems} item${orderItems > 1 ? 's' : ''} ordered • Total: $${orderTotal.toFixed(2)}`,
+            duration: 5000,
+            action: {
+                label: "View Order",
+                onClick: () => {
+                    toast.info("Order tracking coming soon!", {
+                        description: "You'll receive an email confirmation shortly.",
+                        duration: 3000,
+                    })
+                },
+            },
+        })
+    }
+
     const totalItems = items.reduce((sum, item) => sum + item.quantity, 0)
     const totalPrice = items.reduce((sum, item) => sum + (item.price * item.quantity), 0)
 
@@ -72,6 +112,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         removeItem,
         updateQuantity,
         clearCart,
+        checkout,
         totalItems,
         totalPrice
     }

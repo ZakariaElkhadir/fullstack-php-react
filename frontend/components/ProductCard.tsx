@@ -13,6 +13,19 @@ interface Price {
   symbol?: string;
 }
 
+interface AttributeItem {
+  id: string;
+  displayValue: string;
+  value: string;
+}
+
+interface Attribute {
+  id: string;
+  name: string;
+  type: string;
+  items: AttributeItem[];
+}
+
 interface Product {
   id: string;
   name: string;
@@ -21,7 +34,7 @@ interface Product {
   category?: string;
   gallery: string[];
   brand?: string;
-  attributes: string[];
+  attributes: Attribute[];
 }
 interface ProductCardProp {
   selectedCategory: string;
@@ -42,7 +55,16 @@ const GET_PRODUCTS = gql`
       category
       gallery
       brand
-      attributes
+      attributes {
+        id
+        name
+        type
+        items {
+          id
+          displayValue
+          value
+        }
+      }
     }
   }
 `;
@@ -129,31 +151,14 @@ const ProductCard = ({
   return (
     <section
       id="products"
-      className="width-full relative min-h-screen overflow-hidden bg-gradient-to-br from-slate-900 via-green-dark to-slate-800"
+      className="width-full relative min-h-screen overflow-hidden bg-[#0b0d10]"
     >
-      {/* Left light reflection */}
-      <div className="absolute top-0 left-0 w-1/2 h-full bg-gradient-to-r from-green-success/30 via-green-light/15 to-transparent blur-3xl transform -skew-y-12 -translate-x-1/4"></div>
-
-      {/* Right light reflection */}
-      <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-green-sage/35 via-green-success/20 to-transparent blur-2xl transform skew-y-12 translate-x-1/4"></div>
-
-      {/* Top center glow */}
-      <div className="absolute top-10 left-1/2 transform -translate-x-1/2 w-3/4 h-96 bg-gradient-radial from-green-light/25 via-green-success/10 to-transparent blur-2xl rounded-full"></div>
-
-      {/* Bottom light reflection */}
-      <div className="absolute bottom-0 left-1/4 w-1/2 h-1/3 bg-gradient-radial from-green-sage/20 to-transparent blur-xl rounded-full"></div>
-
-      {/* Light beams */}
-      <div className="absolute inset-0 bg-gradient-to-br from-transparent via-green-success/8 to-transparent"></div>
-      <div className="absolute inset-0 bg-gradient-to-bl from-green-light/5 via-transparent to-green-sage/5"></div>
-
-      {/* Glass morphism overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-white/8 via-transparent to-black/15 backdrop-blur-[2px]"></div>
-
-      {/* Subtle geometric glow */}
-      <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-gradient-radial from-green-success/15 to-transparent blur-2xl rounded-full transform rotate-45"></div>
-      <div className="absolute bottom-1/4 left-1/6 w-48 h-48 bg-gradient-radial from-green-light/20 to-transparent blur-xl rounded-full"></div>
-
+      {/* Dark gradient background with green glow accent */}
+      <div className="absolute inset-0 bg-[radial-gradient(1000px_600px_at_20%_30%,rgba(34,197,94,0.25),transparent_60%),radial-gradient(800px_500px_at_70%_20%,rgba(107,138,115,0.18),transparent_55%)]" aria-hidden />
+      <div className="absolute inset-0 bg-gradient-to-b from-white/[0.02] to-transparent" aria-hidden />
+      {/* Additional green spotlight effects */}
+      <div className="absolute inset-0 bg-[radial-gradient(600px_400px_at_80%_70%,rgba(34,197,94,0.15),transparent_50%),radial-gradient(500px_300px_at_10%_80%,rgba(107,138,115,0.12),transparent_45%)]" aria-hidden />
+    
       <div className="relative z-10 container mx-auto p-6 pt-20">
         <h1 className="text-6xl font-bold mb-8 text-center text-white drop-shadow-2xl">
           Check Out Our Products

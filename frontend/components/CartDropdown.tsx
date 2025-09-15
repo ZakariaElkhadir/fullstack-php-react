@@ -9,7 +9,7 @@ import { toast } from "sonner";
 
 const CartDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { items, totalItems, totalPrice, updateQuantity, removeItem, clearCart } = useCart();
+  const { items, totalItems, totalPrice, updateQuantity, removeItem, clearCart, checkout } = useCart();
 
   const handleQuantityChange = (id: string | number, newQuantity: number) => {
     if (newQuantity <= 0) {
@@ -201,14 +201,12 @@ const CartDropdown = () => {
                 <Button
                   onClick={() => {
                     setIsOpen(false);
-                    toast.info('Checkout feature coming soon!', {
-                      description: `${totalItems} item${totalItems > 1 ? 's' : ''} worth $${totalPrice.toFixed(2)} ready for checkout`,
-                      duration: 3000,
-                    });
+                    checkout();
                   }}
-                  className="flex-1 bg-green-light text-white hover:bg-green-dark"
+                  disabled={totalItems === 0}
+                  className="flex-1 bg-green-light text-white hover:bg-green-dark disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed transition-all duration-200"
                 >
-                  Checkout
+                  Checkout ${totalPrice.toFixed(2)}
                 </Button>
               </div>
             </div>

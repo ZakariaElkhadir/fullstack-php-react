@@ -50,7 +50,7 @@ const Header = ({ selectedCategory, onCategoryChange, availableCategories = [] }
             alt="Pixel Cart Logo"
             width={40}
             height={40}
-            className="hover:scale-105 transition-transform duration-200"
+            className="hover:scale-105 transition-transform duration-200 invert"
           />
         </Link>
 

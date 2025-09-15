@@ -8,6 +8,7 @@ import {
   useCategoryContext,
 } from "@/contexts/CategoryContext";
 import { CartProvider } from "@/contexts/CartContext";
+import { Toaster } from "sonner";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -50,6 +51,24 @@ export default function RootLayout({
           <CartProvider>
             <CategoryProvider>
               <LayoutContent>{children}</LayoutContent>
+              <Toaster 
+                position="top-right"
+                expand={true}
+                richColors={true}
+                closeButton={true}
+                toastOptions={{
+                  style: {
+                    background: 'rgba(255, 255, 255, 0.95)',
+                    backdropFilter: 'blur(16px)',
+                    border: '1px solid rgba(34, 197, 94, 0.2)',
+                    borderRadius: '12px',
+                    color: '#065f46',
+                    fontSize: '14px',
+                    fontWeight: '500',
+                  },
+                  className: 'mobile-toast',
+                }}
+              />
             </CategoryProvider>
           </CartProvider>
         </ApolloProvider>
