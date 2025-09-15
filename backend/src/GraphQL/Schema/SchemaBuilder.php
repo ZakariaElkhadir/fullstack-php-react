@@ -7,10 +7,10 @@ use GraphQL\Type\Definition\Type;
 use GraphQL\Type\Schema;
 use GraphQL\Type\SchemaConfig;
 
-// Import all types
 use App\GraphQL\Types\Interfaces\ProductInterface;
 use App\GraphQL\Types\Interfaces\CategoryInterface;
 use App\GraphQL\Types\Interfaces\AttributeInterface;
+use App\GraphQL\Types\AttributeType;
 use App\GraphQL\Types\Products\ClothesProductType;
 use App\GraphQL\Types\Products\TechProductType;
 use App\GraphQL\Types\Products\ProductType;
@@ -19,7 +19,6 @@ use App\GraphQL\Types\Categories\TechCategoryType;
 use App\GraphQL\Types\Attributes\SwatchAttributeType;
 use App\GraphQL\Types\OrderType;
 
-// Import all resolvers
 use App\GraphQL\Resolvers\ProductResolver;
 use App\GraphQL\Resolvers\CategoryResolver;
 use App\GraphQL\Resolvers\AttributeResolver;
@@ -136,7 +135,6 @@ class SchemaBuilder
             ],
         ]);
 
-        // Define Mutation type
         $mutationType = new ObjectType([
             "name" => "Mutation",
             "description" => "Root mutation type",
@@ -155,7 +153,6 @@ class SchemaBuilder
             ],
         ]);
 
-        // Build and return the schema
         return new Schema(
             new SchemaConfig()
                 ->setQuery($queryType)
@@ -165,6 +162,7 @@ class SchemaBuilder
                     ProductInterface::getType(),
                     CategoryInterface::getType(),
                     AttributeInterface::getType(),
+                    AttributeType::getType(),
                     ClothesProductType::getType(),
                     TechProductType::getType(),
                     ProductType::getType(),

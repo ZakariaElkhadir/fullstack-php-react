@@ -49,8 +49,8 @@ class ProductInterface
             'description' => 'Product description'
           ],
           'attributes' => [
-            'type' => Type::nonNull(Type::listOf(Type::nonNull(Type::string()))),
-            'description' => 'List of attribute IDs (resolved separately by AttributeResolver)'
+            'type' => Type::nonNull(Type::listOf(Type::nonNull(\App\GraphQL\Types\AttributeType::getType()))),
+            'description' => 'List of product attributes with their available options (Size, Color, etc.)'
           ]
         ],
         'resolveType' => function ($value) {

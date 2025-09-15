@@ -62,14 +62,10 @@ class TechProductType
                     ],
                     "attributes" => [
                         "type" => Type::nonNull(
-                            Type::listOf(Type::nonNull(Type::string())),
+                            Type::listOf(Type::nonNull(\App\GraphQL\Types\AttributeType::getType())),
                         ),
                         "resolve" => function ($product) {
-                            $attributes = $product->getAttributes();
-                            return array_map(
-                                fn($attr) => $attr["id"],
-                                $attributes,
-                            );
+                            return $product->getAttributes();
                         },
                     ],
 
