@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, ReactNode } from 'react'
+import { createContext, useContext, useState, ReactNode, useEffect } from 'react'
 import { toast } from 'sonner'
 
 interface CartItem {
@@ -20,6 +20,8 @@ interface CartContextType {
     totalPrice: number
 }
 
+const CART_STORAGE_KEY = 'scandiweb-cart'
+
 const CartContext = createContext<CartContextType | undefined>(undefined)
 
 export const useCart = () => {
@@ -30,8 +32,35 @@ export const useCart = () => {
     return context
 }
 
+// Load cart from localStorage
+const loadCartFromStorage = (): CartItem[] => {
+    if (typeof window === 'undefined') return []
+    try {
+        const stored = localStorage.getItem(CART_STORAGE_KEY)
+        return stored ? JSON.parse(stored) : []
+    } catch (error) {
+        console.error('Failed to load cart from storage:', error)
+        return []
+    }
+}
+
+// Save cart to localStorage
+const saveCartToStorage = (items: CartItem[]) => {
+    if (typeof window === 'undefined') return
+    try {
+        localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items))
+    } catch (error) {
+        console.error('Failed to save cart to storage:', error)
+    }
+}
+
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-    const [items, setItems] = useState<CartItem[]>([])
+    const [items, setItems] = useState<CartItem[]>(loadCartFromStorage)
+
+    // Persist cart to localStorage whenever it changes
+    useEffect(() => {
+        saveCartToStorage(items)
+    }, [items])
 
     const addItem = (newItem: Omit<CartItem, 'quantity'>, quantity: number = 1) => {
         setItems(prev => {
