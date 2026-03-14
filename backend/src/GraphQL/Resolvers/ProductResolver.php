@@ -102,17 +102,26 @@ class ProductResolver
     private static function getAllProductsFromAllTypes(): array
     {
         $allProducts = [];
+        $errors = [];
 
         try {
             $allProducts = array_merge($allProducts, ClothesProduct::findAll());
         } catch (\Exception $e) {
             error_log("Error loading clothes products: " . $e->getMessage());
+            $errors[] = "clothes: " . $e->getMessage();
         }
 
         try {
             $allProducts = array_merge($allProducts, TechProduct::findAll());
         } catch (\Exception $e) {
             error_log("Error loading tech products: " . $e->getMessage());
+            $errors[] = "tech: " . $e->getMessage();
+        }
+
+        if (!empty($errors)) {
+            throw new \Exception(
+                "Unable to load products from database. " . implode(" | ", $errors),
+            );
         }
 
         return $allProducts;

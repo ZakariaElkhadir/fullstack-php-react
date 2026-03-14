@@ -1,8 +1,0 @@
-[phases.setup]
-nixPkgs = ["php", "phpPackages.composer"]
-
-[phases.install]
-cmds = ["cd backend && composer install --no-dev --optimize-autoloader"]
-
-[phases.build]
-cmds = ["echo 'Build phase completed'"]

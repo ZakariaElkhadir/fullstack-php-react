@@ -1,29 +1,56 @@
 <?php
-require_once __DIR__ . '/../vendor/autoload.php';
+$autoloadPaths = [
+    __DIR__ . '/vendor/autoload.php',
+    __DIR__ . '/../vendor/autoload.php',
+    dirname(__DIR__) . '/vendor/autoload.php',
+];
+
+$autoloaderLoaded = false;
+foreach ($autoloadPaths as $autoloadPath) {
+    if (file_exists($autoloadPath)) {
+        require_once $autoloadPath;
+        $autoloaderLoaded = true;
+        break;
+    }
+}
+
+if (!$autoloaderLoaded) {
+    die("Error: Composer autoloader not found. Run composer install in backend.\n");
+}
 
 use Dotenv\Dotenv;
 
 $dotenv = Dotenv::createImmutable(__DIR__);
-$dotenv->load();
 
-$host = $_ENV['DB_HOST'];
-$dbname = $_ENV['DB_NAME'];
-$username = $_ENV['DB_USER'];
-$password = $_ENV['DB_PASS'];
-$port = $_ENV['DB_PORT'] ?? 3306;
+$dotenv->safeLoad();
+
+if (!extension_loaded('pdo_mysql')) {
+    die("Error: PHP extension 'pdo_mysql' is not enabled for CLI. Install/enable it, then rerun import.\n");
+}
+
+$host = $_ENV['DB_HOST'] ?? getenv('DB_HOST') ?: 'localhost';
+$dbname = $_ENV['DB_NAME'] ?? getenv('DB_NAME') ?: '';
+$username = $_ENV['DB_USER'] ?? getenv('DB_USER') ?: '';
+$password = $_ENV['DB_PASS'] ?? getenv('DB_PASS') ?: '';
+$port = (int) ($_ENV['DB_PORT'] ?? getenv('DB_PORT') ?: 3306);
 
 $dotenv->required(['DB_NAME', 'DB_USER', 'DB_PASS']);
 $dsn = "mysql:host=$host;port=$port;dbname=$dbname;charset=utf8mb4";
 
 try {
-    $pdo = new PDO($dsn, $username, $password, [
+    $pdoOptions = [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-        PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4"
-    ]);
+    ];
+
+    if (defined('PDO::MYSQL_ATTR_INIT_COMMAND')) {
+        $pdoOptions[PDO::MYSQL_ATTR_INIT_COMMAND] = "SET NAMES utf8mb4";
+    }
+
+    $pdo = new PDO($dsn, $username, $password, $pdoOptions);
     echo "Connection successful 😃 \n";
 
-    $jsonFile = 'data.json';
+    $jsonFile = __DIR__ . '/data.json';
     if (!file_exists($jsonFile)) {
         die("Error: data.json file not found!\n");
     }

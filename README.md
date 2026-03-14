@@ -71,7 +71,7 @@ fullstack-php-react/
    cd backend
    composer install
    ```
-2. Configure your database in `.env` or Railway dashboard.
+2. Configure your database in `backend/.env`.
 3. Import schema:
    ```bash
    mysql -u <user> -p <database> < create_db.sql
@@ -98,12 +98,6 @@ fullstack-php-react/
 ## 🧪 Testing
 - Backend: Run GraphQL tests with provided PHP scripts (see `backend/README.md`)
 - Frontend: Use Next.js built-in testing and linting
-
----
-
-## 🚀 Deployment
-- Ready for Railway deployment (see `RAILWAY_DEPLOYMENT.md`)
-- Set environment variables for database connection
 
 ---
 
